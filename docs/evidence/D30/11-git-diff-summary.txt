@@ -1,0 +1,62 @@
+# D30 Git 变更与工作区证据
+
+采集时间：2026-11-13/14（Asia/Shanghai）
+
+## 1. 分支与 HEAD
+
+```text
+BRANCH=master
+HEAD=efb0df0 D30 项目问题整改 环境基线是本地 Embedding 384 维
+```
+
+HEAD `efb0df0` 是任务执行期间由外部操作产生的提交（2026-11-13 23:27:36），不是本任务创建。
+
+## 2. 工作区状态（限定 D30 相关路径）
+
+```text
+ M D30/D30_postgresqlAndpgvector/src/main/java/com/zl/d30/config/PgDataSourceConfig.java
+ M D30/D30_postgresqlAndpgvector/src/main/resources/db/pgvector/d30-pgvector-verification.sql
+ M D30/D30_postgresqlAndpgvector/src/test/java/com/zl/d30/config/PgDataSourceConfigTest.java
+ M docs/evidence/D30/03-docker-status.txt
+ M "docs/proj_docs/D30-01_PG配置与向量维度384迭代实施全记录.md"
+?? docs/evidence/D30/01-repository-scan.md
+?? docs/evidence/D30/02-postgresql-version.txt
+?? docs/evidence/D30/04-pgvector-extension.txt
+?? docs/evidence/D30/05-vector-dimension.txt
+?? docs/evidence/D30/06-vector-db-validation-psql.txt
+?? docs/evidence/D30/07-hnsw-index.txt
+?? docs/evidence/D30/08-jdbc-connection.txt
+?? docs/evidence/D30/09-maven-compile.txt
+?? docs/evidence/D30/10-maven-test.txt
+?? docs/evidence/D30/11-git-diff-summary.txt
+?? docs/evidence/D30/12-verification-sql-rollback.txt
+?? docs/evidence/D30/13-final-db-state.txt
+?? "docs/proj_docs/D30-PostgreSQL与pgvector技术原理及本地部署操作实践指南.md"
+?? "docs/proj_docs/D30-PostgreSQL与pgvector本地环境部署及项目迭代全量说明.md"
+```
+
+说明：日志文件 `logs/D30/*.log` 与 `target/` 构建产物被仓库现有 `.gitignore` 忽略，因此不出现在状态列表中；它们仍真实存在于本地。
+
+## 3. 已跟踪代码差异统计
+
+```text
+ .../src/main/java/com/zl/d30/config/PgDataSourceConfig.java      | 3 ++-
+ .../src/main/resources/db/pgvector/d30-pgvector-verification.sql | 7 ++++++-
+ .../src/test/java/com/zl/d30/config/PgDataSourceConfigTest.java  | 9 ++++++---
+ 3 files changed, 14 insertions(+), 5 deletions(-)
+```
+
+## 4. diff --check
+
+```text
+no whitespace errors reported
+```
+
+## 5. 提交状态
+
+- 本轮未执行 git add / commit / push。
+- 没有本轮 Git Commit ID。
+- 未使用 reset / clean / checkout -- 覆盖工作区。
+- HEAD `efb0df0` 为任务执行期间出现的外部提交，不是本轮创建。
+- 用户提供的任务书已被该外部提交纳入版本库，且内含敏感数据库凭据；不得继续扩散，建议轮换凭据、从历史清除或改用脱敏文件。
+- 旧命名文档 `D30-01` / `D30-02` 的处置不由本轮决定；本轮仅对 `D30-01` 中口令字面量做了脱敏，未删除文件。

@@ -1,0 +1,30 @@
+===== [PG_VERSION] =====
+spring_ai|PostgreSQL 18.7 (Debian 18.7-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+Asia/Shanghai
+===== [PGVECTOR_EXTENSION] =====
+vector|0.8.7
+===== [VECTOR_TABLE] =====
+id|bigint
+content|text
+embedding|vector(384)
+created_at|timestamp with time zone
+===== [VECTOR_ROWS] =====
+9
+9|D30-JDBC-COSINE-B-a5b641dc-eaca-44ad-9f3d-5de5bb8447a9|384
+8|D30-JDBC-COSINE-A-a5b641dc-eaca-44ad-9f3d-5de5bb8447a9|384
+7|D30-JDBC-READ-53e0f159-b498-4c47-8af0-8a928d65cf1f|384
+6|D30-JDBC-COSINE-B-c2536a33-eb08-4830-b768-df5293385680|384
+5|D30-JDBC-COSINE-A-c2536a33-eb08-4830-b768-df5293385680|384
+===== [COSINE_QUERY_LATEST_PAIR] =====
+8|D30-JDBC-COSINE-A-a5b641dc-eaca-44ad-9f3d-5de5bb8447a9|0.000000|1.000000
+9|D30-JDBC-COSINE-B-a5b641dc-eaca-44ad-9f3d-5de5bb8447a9|0.948969|0.051031
+===== [HNSW_INDEX] =====
+d30_pgvector_test_pkey|CREATE UNIQUE INDEX d30_pgvector_test_pkey ON public.d30_pgvector_test USING btree (id)
+idx_d30_pgvector_test_embedding|CREATE INDEX idx_d30_pgvector_test_embedding ON public.d30_pgvector_test USING hnsw (embedding vector_cosine_ops)
+===== [WRONG_DIMENSION_EXPECTED_FAILURE] =====
+ERROR:  expected 384 dimensions, not 383
+===== [WRONG_DIMENSION_RESIDUAL] =====
+0
+
+===== [TIME_POINT_NOTE] =====
+本快照采集时为 9 行。最终全量构建的 JDBC 验收又留下 3 条 D30-JDBC-* 合成标记行，最终只读核对为 12 行；见 13-final-db-state.txt。均为合成测试数据，不是业务向量。

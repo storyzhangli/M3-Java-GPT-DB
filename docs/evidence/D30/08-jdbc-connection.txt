@@ -1,0 +1,41 @@
+# D30 Windows 本机 JDBC 验收证据
+
+采集方式：Surefire XML 测试报告与 `PgVectorJdbcAcceptanceTest` 源码。
+前置条件：`PG_PASSWORD` 由环境变量注入，`D30_PG_IT=true` 显式开启真机测试。
+
+## 1. 运行环境
+
+```text
+suite=com.zl.d30.config.PgVectorJdbcAcceptanceTest
+tests=6
+failures=0
+errors=0
+skipped=0
+java.version=21.0.7
+os.name=Windows 11
+spring.profiles.active=test
+```
+
+## 2. 测试用例与结果
+
+```text
+embeddingAndColumnAre384Dimensions|PASS|0.061s
+postgresVersionAndVectorExtension|PASS|0.014s
+insertAndReadSyntheticVector|PASS|0.027s
+wrongDimensionIsRejected|PASS|0.031s
+hnswIndexAndExplain|PASS|0.022s
+cosineDistanceQueryOrdersByDistance|PASS|0.029s
+```
+
+## 3. 覆盖的 JDBC 行为
+
+- 通过应用实际 `@Qualifier("pgDataSource")` 数据源建立连接，不另建测试连接。
+- 查询 `current_database()`、`version()`、`pg_extension`。
+- 校验 Embedding 模型输出与测试表列均为 384 维。
+- 真实 INSERT / SELECT 合成向量。
+- `<=>` cosine 距离升序查询。
+- HNSW 索引定义与 EXPLAIN 执行计划。
+- 383 维向量写入被拒绝，且未残留数据。
+
+原始日志：`logs/D30/10-jdbc-acceptance-test.log`、`logs/D30/13-full-test-package.log`。
+说明：该测试只在 Windows 本机显式开启时执行，默认测试套件不连接外部 PostgreSQL。

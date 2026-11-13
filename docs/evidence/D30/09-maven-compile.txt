@@ -1,0 +1,13 @@
+[INFO] Scanning for projects...
+[INFO] Building D30 1.0-SNAPSHOT                                          [1/2]
+[INFO]   from pom.xml
+[INFO] Building D30_postgresqlAndpgvector 1.0-SNAPSHOT                    [2/2]
+[INFO] --- resources:3.3.1:resources (default-resources) @ D30_postgresqlAndpgvector ---
+[INFO] --- compiler:3.13.0:compile (default-compile) @ D30_postgresqlAndpgvector ---
+[INFO] Compiling 186 source files with javac [debug parameters release 21] to target\classes
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ D30_postgresqlAndpgvector ---
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ D30_postgresqlAndpgvector ---
+[INFO] Compiling 48 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] Building jar: E:\AI\project\AI-Learning-three-GPT\M3-Java\D30\D30_postgresqlAndpgvector\target\D30_postgresqlAndpgvector-1.0-SNAPSHOT.jar
+[INFO] BUILD SUCCESS
+[INFO] Total time:  01:19 min

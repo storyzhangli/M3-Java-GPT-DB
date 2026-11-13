@@ -6,6 +6,8 @@
 -- ============================================================================
 
 -- 1. 环境与扩展确认
+CREATE EXTENSION IF NOT EXISTS vector;
+
 SELECT current_database();
 SELECT version();
 
@@ -36,7 +38,10 @@ FROM pg_indexes
 WHERE schemaname = 'public'
   AND tablename = 'd30_pgvector_test';
 
--- 4. 写入两条 384 维合成向量
+-- 4. 写入两条 384 维合成向量（先清理同名合成数据，保证脚本可重复执行）
+DELETE FROM public.d30_pgvector_test
+WHERE content IN ('D30 SQL synthetic vector A', 'D30 SQL synthetic vector B');
+
 INSERT INTO public.d30_pgvector_test (content, embedding)
 VALUES (
     'D30 SQL synthetic vector A',

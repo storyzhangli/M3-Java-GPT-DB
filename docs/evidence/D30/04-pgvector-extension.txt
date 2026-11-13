@@ -1,0 +1,20 @@
+# D30 pgvector 扩展证据
+
+采集方式：容器 `pgvector-pg18` 内执行 `psql -U postgres -d spring_ai -Atc`。
+采集时间：2026-11-13（Asia/Shanghai）。
+
+```text
+extname|extversion
+vector|0.8.7
+```
+
+配套镜像信息：
+
+```text
+image=pgvector/pgvector:pg18
+container=pgvector-pg18
+```
+
+判定：`spring_ai` 数据库已安装 pgvector 扩展，版本 0.8.7。
+
+边界：扩展存在只证明 vector 类型、距离运算符与索引能力可用，不等于业务向量表已经写入或检索成功；写入与查询证据见 `06-vector-db-validation-psql.txt`。

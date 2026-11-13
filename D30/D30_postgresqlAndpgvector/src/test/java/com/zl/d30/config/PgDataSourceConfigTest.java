@@ -12,8 +12,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * 双数据源装配测试：验证 MySQL 主库仍为 @Primary，PG 池参数正确绑定。
  *
- * <p>该测试只用 {@link ApplicationContextRunner} 装载两个配置类，不引入自动配置、不建立真实连接
- * （Hikari 懒初始化），因此无需 PG / MySQL 在线即可运行。</p>
+ * <p>该测试只用 {@link ApplicationContextRunner} 装载两个配置类，不引入自动配置。
+ * Hikari 在构造期默认会等待首个连接，因此这里显式设置 {@code initialization-fail-timeout=-1}，
+ * 让测试只验证属性绑定、不建立真实连接，也不依赖 PG / MySQL 在线或真实口令。</p>
  */
 class PgDataSourceConfigTest {
 
@@ -30,7 +31,9 @@ class PgDataSourceConfigTest {
                     "spring.datasource.pg.driver-class-name=org.postgresql.Driver",
                     "spring.datasource.pg.pool-name=PgVectorHikariPool",
                     "spring.datasource.pg.maximum-pool-size=10",
-                    "spring.datasource.pg.minimum-idle=2");
+                    "spring.datasource.pg.minimum-idle=2",
+                    // 负值让 Hikari 不在构造期等待首个连接；该测试只验证绑定，不应依赖真实 PG 口令。
+                    "spring.datasource.pg.initialization-fail-timeout=-1");
 
     @Test
     @DisplayName("MySQL 主数据源保持 @Primary，且连接参数指向 MySQL")

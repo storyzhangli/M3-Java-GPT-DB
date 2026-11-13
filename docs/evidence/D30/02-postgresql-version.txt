@@ -1,0 +1,19 @@
+# D30 PostgreSQL 版本与连接目标证据
+
+采集方式：Windows 本机通过 SSH 连接 192.168.200.153，在容器 `pgvector-pg18` 内执行 `psql`。
+采集时间：2026-11-13（Asia/Shanghai）。
+
+```text
+current_database|version
+spring_ai|PostgreSQL 18.7 (Debian 18.7-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+
+SHOW timezone
+Asia/Shanghai
+```
+
+判定：
+- 数据库名：`spring_ai`
+- 服务端版本：PostgreSQL 18.7
+- 时区：Asia/Shanghai
+
+说明：该证据只证明 PostgreSQL 服务端版本与数据库目标；JDBC 连通性另见 `08-jdbc-connection.txt` 与 `06-vector-db-validation-psql.txt`。

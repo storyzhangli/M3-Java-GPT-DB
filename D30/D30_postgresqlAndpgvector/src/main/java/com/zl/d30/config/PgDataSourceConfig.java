@@ -31,7 +31,8 @@ import javax.sql.DataSource;
 public class PgDataSourceConfig {
 
     /**
-     * PG 连接池配置载体：仅做属性绑定，不建立连接（Hikari 是懒初始化）。
+     * PG 连接池配置载体：仅做属性绑定，不建立连接。
+     * 注意：{@link HikariDataSource} 构造时默认会尝试首个连接，是否阻塞由 initializationFailTimeout 决定。
      */
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.pg", ignoreUnknownFields = false)

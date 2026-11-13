@@ -1,0 +1,10 @@
+D30 final database state
+Timestamp: 2026-11-14 Asia/Shanghai
+
+NAME            IMAGE                    COMMAND                   SERVICE    CREATED       STATUS                 PORTS
+pgvector-pg18   pgvector/pgvector:pg18   "docker-entrypoint.s…"   postgres   8 hours ago   Up 8 hours (healthy)   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp
+NAME=/pgvector-pg18 STATUS=running HEALTH=healthy RESTARTS=0 IMAGE=pgvector/pgvector:pg18
+DB=spring_ai PG=18.7 (Debian 18.7-1.pgdg12+2) EXT=0.8.7
+TEST_ROWS=12
+EMBEDDING_TYPE=vector(384)
+VECTOR_STORE_TYPE=vector(384)

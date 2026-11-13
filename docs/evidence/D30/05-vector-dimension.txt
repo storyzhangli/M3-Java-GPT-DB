@@ -1,0 +1,44 @@
+# D30 向量维度与专用测试表证据
+
+采集方式：容器 `pgvector-pg18` 内执行 `psql`，查询 `public.d30_pgvector_test`。
+采集时间：2026-11-13（Asia/Shanghai）。
+
+## 1. 表结构
+
+```text
+id|bigint
+content|text
+embedding|vector(384)
+created_at|timestamp with time zone
+```
+
+## 2. 当前记录数与写入结果
+
+```text
+count
+9
+
+id|content|vector_dims
+9|D30-JDBC-COSINE-B-a5b641dc-eaca-44ad-9f3d-5de5bb8447a9|384
+8|D30-JDBC-COSINE-A-a5b641dc-eaca-44ad-9f3d-5de5bb8447a9|384
+7|D30-JDBC-READ-53e0f159-b498-4c47-8af0-8a928d65cf1f|384
+6|D30-JDBC-COSINE-B-c2536a33-eb08-4830-b768-df5293385680|384
+5|D30-JDBC-COSINE-A-c2536a33-eb08-4830-b768-df5293385680|384
+```
+
+## 3. 结论
+
+- 列类型为 `vector(384)`，数据库层固定维度为 384。
+- JDBC 写入的测试向量 `vector_dims=384`，可成功读取。
+- 数据为确定性合成向量（内容带 `D30-JDBC-*` 标识），不是真实业务 Embedding，不写入正式 `vector_store` 表。
+
+## 4. 应用侧维度对齐
+
+- `app.ai.embedding.dimensions` 默认 384。
+- `spring.ai.vectorstore.pgvector.dimensions` 配置 384。
+- 本地 Embedding 模型 `local-hashing-embedding` 实际输出 384。
+- 三者由 `VectorDimensionGuard` 在 `PgVectorStore` 装配前校验，不一致则 fail-fast。
+
+## 5. 时间点说明
+
+本文件是 2026-11-13 23:54 的快照，当时为 9 行。随后最终全量构建再次执行 `PgVectorJdbcAcceptanceTest`，该测试会为每次运行留下 3 条带 `D30-JDBC-*` 前缀的合成标记行，因此最终只读核对为 12 行；最新状态见 `13-final-db-state.txt`。这不是业务数据，也不在 `vector_store` 中。

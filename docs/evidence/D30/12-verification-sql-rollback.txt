@@ -1,0 +1,65 @@
+D30 pgvector verification SQL execution
+Mode: BEGIN + ROLLBACK (no persisted test data)
+Timestamp: 2026-11-13 Asia/Shanghai
+
+BEGIN
+NOTICE:  extension "vector" already exists, skipping
+CREATE EXTENSION
+ current_database 
+------------------
+ spring_ai
+(1 row)
+
+                                                          version                                                           
+----------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.7 (Debian 18.7-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+(1 row)
+
+ extname | extversion 
+---------+------------
+ vector  | 0.8.7
+(1 row)
+
+CREATE TABLE
+NOTICE:  relation "d30_pgvector_test" already exists, skipping
+ embedding_type 
+----------------
+ vector(384)
+(1 row)
+
+CREATE INDEX
+NOTICE:  relation "idx_d30_pgvector_test_embedding" already exists, skipping
+            indexname            |                                                     indexdef                                                      
+---------------------------------+-------------------------------------------------------------------------------------------------------------------
+ d30_pgvector_test_pkey          | CREATE UNIQUE INDEX d30_pgvector_test_pkey ON public.d30_pgvector_test USING btree (id)
+ idx_d30_pgvector_test_embedding | CREATE INDEX idx_d30_pgvector_test_embedding ON public.d30_pgvector_test USING hnsw (embedding vector_cosine_ops)
+(2 rows)
+
+DELETE 0
+INSERT 0 1
+INSERT 0 1
+ id |          content           | dimensions 
+----+----------------------------+------------
+ 13 | D30 SQL synthetic vector B |        384
+ 12 | D30 SQL synthetic vector A |        384
+(2 rows)
+
+ id |                        content                         | cosine_distance | cosine_similarity 
+----+--------------------------------------------------------+-----------------+-------------------
+  4 | D30-JDBC-READ-78b3cd54-aed9-4a40-8c31-66ad4f431e75     |               0 |                 1
+  5 | D30-JDBC-COSINE-A-c2536a33-eb08-4830-b768-df5293385680 |               0 |                 1
+  7 | D30-JDBC-READ-53e0f159-b498-4c47-8af0-8a928d65cf1f     |               0 |                 1
+  2 | D30-JDBC-COSINE-A-0c525d96-6dc7-4531-b60a-02ca2ae14b03 |               0 |                 1
+  1 | D30-JDBC-READ-db65646b-0be3-4259-a143-40057c4095f5     |               0 |                 1
+(5 rows)
+
+                                                       QUERY PLAN                                                        
+-------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=15.11..15.57 rows=5 width=48)
+   InitPlan 1
+     ->  Function Scan on generate_series  (cost=0.00..3.84 rows=384 width=4)
+   ->  Index Scan using idx_d30_pgvector_test_embedding on d30_pgvector_test  (cost=11.27..80.39 rows=750 width=48)
+         Order By: (embedding <=> ((('['::text || array_to_string((InitPlan 1).col1, ','::text)) || ']'::text))::vector)
+(5 rows)
+
+ROLLBACK

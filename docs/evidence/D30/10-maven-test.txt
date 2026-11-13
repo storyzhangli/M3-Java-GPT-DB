@@ -1,0 +1,96 @@
+[INFO] Running com.zl.d30.adapter.deepseek.DeepSeekChatAdapterTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.487 s -- in com.zl.d30.adapter.deepseek.DeepSeekChatAdapterTest
+[INFO] Running com.zl.d30.adapter.deepseek.DeepSeekNativeUsageReaderTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.048 s -- in com.zl.d30.adapter.deepseek.DeepSeekNativeUsageReaderTest
+[INFO] Running com.zl.d30.adapter.VendorBoundaryTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.413 s -- in com.zl.d30.adapter.VendorBoundaryTest
+[INFO] Running com.zl.d30.AiFailureLifecycleTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.02 s -- in com.zl.d30.AiFailureLifecycleTest
+[INFO] Running com.zl.d30.ApplicationTypeTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.754 s -- in com.zl.d30.ApplicationTypeTest
+[INFO] Running com.zl.d30.config.AiConfigurationValidatorTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s -- in com.zl.d30.config.AiConfigurationValidatorTest
+[INFO] Running com.zl.d30.config.PgDataSourceConfigTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.116 s -- in com.zl.d30.config.PgDataSourceConfigTest
+[INFO] Running com.zl.d30.config.PgVectorJdbcAcceptanceTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.306 s -- in com.zl.d30.config.PgVectorJdbcAcceptanceTest
+[INFO] Running com.zl.d30.config.PgVectorStoreIntegrationTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.744 s -- in com.zl.d30.config.PgVectorStoreIntegrationTest
+[INFO] Running com.zl.d30.config.PgVectorStorePropertiesTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in com.zl.d30.config.PgVectorStorePropertiesTest
+[INFO] Running com.zl.d30.config.VectorDimensionGuardTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in com.zl.d30.config.VectorDimensionGuardTest
+[INFO] Running com.zl.d30.conversation.ConversationSessionTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in com.zl.d30.conversation.ConversationSessionTest
+[INFO] Running com.zl.d30.device.DeviceEnumFallbackTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in com.zl.d30.device.DeviceEnumFallbackTest
+[INFO] Running com.zl.d30.device.StructuredCandidateParserTest
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.071 s -- in com.zl.d30.device.StructuredCandidateParserTest
+[INFO] Running com.zl.d30.document.BasicDocumentParserTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.zl.d30.document.BasicDocumentParserTest
+[INFO] Running com.zl.d30.document.chunk.ChunkPropertiesTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s -- in com.zl.d30.document.chunk.ChunkPropertiesTest
+[INFO] Running com.zl.d30.document.chunk.clean.TextCleanerTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 s -- in com.zl.d30.document.chunk.clean.TextCleanerTest
+[INFO] Running com.zl.d30.document.chunk.service.DocumentChunkServiceTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in com.zl.d30.document.chunk.service.DocumentChunkServiceTest
+[INFO] Running com.zl.d30.document.chunk.split.FixedSizeSplitterTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 s -- in com.zl.d30.document.chunk.split.FixedSizeSplitterTest
+[INFO] Running com.zl.d30.document.chunk.split.StructureSplitterTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in com.zl.d30.document.chunk.split.StructureSplitterTest
+[INFO] Running com.zl.d30.document.DocumentControllerTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.576 s -- in com.zl.d30.document.DocumentControllerTest
+[INFO] Running com.zl.d30.document.DocumentImportServiceTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.578 s -- in com.zl.d30.document.DocumentImportServiceTest
+[INFO] Running com.zl.d30.document.DocumentPageServiceTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.110 s -- in com.zl.d30.document.DocumentPageServiceTest
+[INFO] Running com.zl.d30.document.DocumentRegistrationServiceTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in com.zl.d30.document.DocumentRegistrationServiceTest
+[INFO] Running com.zl.d30.document.embedding.DocumentEmbeddingServiceTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in com.zl.d30.document.embedding.DocumentEmbeddingServiceTest
+[INFO] Running com.zl.d30.document.embedding.EmbeddingControllerTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.223 s -- in com.zl.d30.document.embedding.EmbeddingControllerTest
+[INFO] Running com.zl.d30.document.embedding.EmbeddingPropertiesTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s -- in com.zl.d30.document.embedding.EmbeddingPropertiesTest
+[INFO] Running com.zl.d30.document.embedding.EmbeddingRetryExecutorTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in com.zl.d30.document.embedding.EmbeddingRetryExecutorTest
+[INFO] Running com.zl.d30.document.embedding.LocalHashingEmbeddingModelTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in com.zl.d30.document.embedding.LocalHashingEmbeddingModelTest
+[INFO] Running com.zl.d30.document.embedding.VectorIndexCompatibilityServiceTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s -- in com.zl.d30.document.embedding.VectorIndexCompatibilityServiceTest
+[INFO] Running com.zl.d30.document.embedding.VectorValidatorTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in com.zl.d30.document.embedding.VectorValidatorTest
+[INFO] Running com.zl.d30.document.FileUploadValidatorTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.109 s -- in com.zl.d30.document.FileUploadValidatorTest
+[INFO] Running com.zl.d30.document.PdfDocumentParserTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.113 s -- in com.zl.d30.document.PdfDocumentParserTest
+[INFO] Running com.zl.d30.document.Sha256ContentHasherTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.zl.d30.document.Sha256ContentHasherTest
+[INFO] Running com.zl.d30.MultiTurnContextWindowTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.902 s -- in com.zl.d30.MultiTurnContextWindowTest
+[INFO] Running com.zl.d30.observability.ModelCallRecorderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.041 s -- in com.zl.d30.observability.ModelCallRecorderTest
+[INFO] Running com.zl.d30.observability.TokenUsageSnapshotTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.zl.d30.observability.TokenUsageSnapshotTest
+[INFO] Running com.zl.d30.resilience.ModelExceptionClassifierTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.084 s -- in com.zl.d30.resilience.ModelExceptionClassifierTest
+[INFO] Running com.zl.d30.resilience.ModelResiliencePropertiesTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.zl.d30.resilience.ModelResiliencePropertiesTest
+[INFO] Running com.zl.d30.resilience.ModelResilienceSupportTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.324 s -- in com.zl.d30.resilience.ModelResilienceSupportTest
+[INFO] Running com.zl.d30.SessionIsolationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.082 s -- in com.zl.d30.SessionIsolationTest
+[INFO] Running com.zl.d30.SseEventOrderTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.678 s -- in com.zl.d30.SseEventOrderTest
+[INFO] Running com.zl.d30.StreamOrchestratorTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.846 s -- in com.zl.d30.StreamOrchestratorTest
+[INFO] Running com.zl.d30.StreamSseHttpTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.128 s -- in com.zl.d30.StreamSseHttpTest
+[INFO] Running com.zl.d30.SyncChatContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.172 s -- in com.zl.d30.SyncChatContractTest
+[INFO] Running com.zl.d30.TraceIdHttpTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.285 s -- in com.zl.d30.TraceIdHttpTest
+[INFO] Tests run: 288, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Building jar: E:\AI\project\AI-Learning-three-GPT\M3-Java\D30\D30_postgresqlAndpgvector\target\D30_postgresqlAndpgvector-1.0-SNAPSHOT.jar
+[INFO] BUILD SUCCESS
+[INFO] Total time:  01:19 min
