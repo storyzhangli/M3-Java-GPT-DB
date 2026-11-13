@@ -1,0 +1,18 @@
+# test profile 覆盖配置（由 maven-surefire-plugin 激活 spring.profiles.active=test）。
+# 仅覆盖历史默认归属：测试中未显式带 X-Dev-User 的请求统一归 ut-default，
+# 清理基类按 ut_ 前缀回收，避免污染 dev-user 的手工演示数据。
+app:
+  ai:
+    history:
+      default-owner: ut-default
+
+# D30：测试上下文不建表、不校验表结构，避免普通测试套件依赖 PostgreSQL 实例。
+# pgDataSource 采用 Hikari 懒初始化，因此不触库也能完成上下文装配与 Bean 校验；
+# 需要真实落库的验证单独由「显式门控」的集成测试承担（D30_PG_IT=true 才会执行）。
+spring:
+  ai:
+    vectorstore:
+      pgvector:
+        initialize-schema: false
+        schema-validation: false
+        remove-existing-vector-store-table: false

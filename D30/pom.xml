@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>D30_pgvector</module>
+        <module>D30_postgresqlAndpgvector</module>
     </modules>
 
     <parent>

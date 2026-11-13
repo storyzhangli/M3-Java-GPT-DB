@@ -1,0 +1,52 @@
+# D30 验证记录：文档导入接口的既有表结构漂移（与 PG 改动无关）
+
+## 记录目的
+
+本文件原先预期记录“文档导入 -> 向量化”的 HTTP 端到端证据，实际执行时导入接口返回失败。
+经核查，失败原因是 **MySQL 运行库表结构与当前 D30 代码/DDL 不一致**，属 D30 迭代之前既已存在的
+环境侧漂移，与本次 PG 数据源 / 384 维向量库改造无关。此处如实留存失败证据与根因。
+
+## 实际请求与响应
+
+```
+POST http://localhost:8080/api/v1/documents/import
+Content-Type: multipart/form-data
+file=d30-sample.txt, source=d30-evidence, title=D30 向量化验证样例
+
+HTTP 200（业务码非 200）
+{"code":5000,"msg":"系统繁忙，请稍后重试","data":null}
+```
+
+## 服务端真实异常（logs/D30-05-run.log）
+
+```
+ACCESS_LOG {"event":"CONTROLLER_ERROR","controllerMethod":"DocumentController#importFile", ...}
+org.apache.ibatis.exceptions.PersistenceException:
+### Error querying database.
+### SQL: SELECT id,document_id,source,title,version,status,content_hash,content_length,
+###      error_code,error_message,created_at,updated_at FROM knowledge_document WHERE (content_hash = ?)
+### Cause: java.sql.SQLSyntaxErrorException: Unknown column 'source' in 'field list'
+```
+
+## 根因
+
+| 对象 | 期望列名 | 实际情况 |
+| --- | --- | --- |
+| `KnowledgeDocumentPO`（代码） | `source` | — |
+| `schema-knowledge-document.sql`（DDL） | `source` | — |
+| MySQL `ai_db.knowledge_document`（运行库） | — | `source_system`、`file_name`、`content_type`、`file_size`，**无 `source`** |
+
+运行库是更早版本的建表结果，当前 DDL 与 PO 已演进为 `source`，但库未同步。
+详见同目录 `D30-mysql-schema.txt` 的只读列清单。
+
+## 结论与处置
+
+- 该问题与 D30 的 PostgreSQL 数据源、PgVectorStore、384 维治理**无因果关系**；
+  本次未修改 MySQL 任何表结构（红线：不擅自做数据库数据清理 / 结构变更）。
+- 384 维链路的真实证据由另外两条独立路径提供，均可复现：
+  1. `PgVectorStoreIntegrationTest`（`D30_PG_IT=true`）：`vector_store` 列类型 `vector(384)`、
+     `vector_dims(embedding)=384`、`EmbeddingModel.embed(...)` 输出长度 384、写入后相似度检索命中；
+  2. `GET /api/v1/embeddings/model` 返回 `dimensions=384`、`vectorSpaceId=local|local-hashing-embedding|local-v1|384`。
+- 若需恢复文档导入链路，建议（未执行，需用户授权）：
+  `ALTER TABLE knowledge_document ADD COLUMN source VARCHAR(64) NOT NULL DEFAULT '' AFTER document_id;`
+  执行前请先确认历史数据迁移口径（`source_system` -> `source` 的映射规则）。

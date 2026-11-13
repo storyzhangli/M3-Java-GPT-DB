@@ -1,0 +1,18 @@
+===== knowledge_document columns (MySQL, read-only) =====
+id               bigint               nullable=NO   default=null
+document_id      varchar(64)          nullable=NO   default=null
+source_system    varchar(128)         nullable=NO   default=null
+title            varchar(300)         nullable=NO   default=null
+version          varchar(64)          nullable=NO   default=null
+status           varchar(16)          nullable=NO   default=null
+file_name        varchar(255)         nullable=YES  default=null
+content_type     varchar(128)         nullable=YES  default=null
+file_size        bigint               nullable=YES  default=null
+content_hash     char(64)             nullable=YES  default=null
+error_code       varchar(64)          nullable=NO   default=
+error_message    varchar(500)         nullable=NO   default=
+created_at       datetime(6)          nullable=NO   default=null
+updated_at       datetime(6)          nullable=NO   default=null
+
+===== prompt_template count (MySQL ���������) =====
+prompt_template_rows=10
