@@ -26,7 +26,7 @@ class PgDataSourceConfigTest {
                     "spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver",
                     "spring.datasource.pg.jdbc-url=jdbc:postgresql://192.168.200.153:5432/spring_ai",
                     "spring.datasource.pg.username=postgres",
-                    "spring.datasource.pg.password=Postgres@2026",
+                    "spring.datasource.pg.password=test-only-password-not-real",
                     "spring.datasource.pg.driver-class-name=org.postgresql.Driver",
                     "spring.datasource.pg.pool-name=PgVectorHikariPool",
                     "spring.datasource.pg.maximum-pool-size=10",

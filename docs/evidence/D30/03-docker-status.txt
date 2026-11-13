@@ -1,0 +1,53 @@
+===== COMPOSE PS =====
+NAME            IMAGE                    COMMAND                   SERVICE    CREATED       STATUS                 PORTS
+pgvector-pg18   pgvector/pgvector:pg18   "docker-entrypoint.s…"   postgres   6 hours ago   Up 6 hours (healthy)   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp
+===== CONTAINER INSPECT =====
+name=/pgvector-pg18 status=running health=healthy image=pgvector/pgvector:pg18 started=2026-11-13T08:08:45.780921803Z restartCount=0 restartPolicy=unless-stopped
+===== HEALTH LOG (last 3) =====
+
+exit=0 start=2026-11-13 22:27:40.831468191 +0800 CST output=/var/run/postgresql:5432 - accepting connections
+
+exit=0 start=2026-11-13 22:27:46.007834843 +0800 CST output=/var/run/postgresql:5432 - accepting connections
+
+
+===== COMPOSE LOGS SERVICE=postgres (tail 30) =====
+pgvector-pg18  | 2026-11-13 18:51:20.150 CST [15592] ERROR:  relation "prompt_template" does not exist at character 33
+pgvector-pg18  | 2026-11-13 18:51:20.150 CST [15592] STATEMENT:  SELECT COUNT( * ) AS total FROM prompt_template      WHERE  (template_id = $1)
+pgvector-pg18  | 2026-11-13 18:51:23.549 CST [15600] ERROR:  relation "prompt_template" does not exist at character 33
+pgvector-pg18  | 2026-11-13 18:51:23.549 CST [15600] STATEMENT:  SELECT COUNT( * ) AS total FROM prompt_template      WHERE  (template_id = $1)
+pgvector-pg18  | 2026-11-13 18:51:26.544 CST [15601] ERROR:  relation "prompt_template" does not exist at character 33
+pgvector-pg18  | 2026-11-13 18:51:26.544 CST [15601] STATEMENT:  SELECT COUNT( * ) AS total FROM prompt_template      WHERE  (template_id = $1)
+pgvector-pg18  | 2026-11-13 18:53:48.830 CST [30] LOG:  checkpoint starting: time
+pgvector-pg18  | 2026-11-13 18:53:52.682 CST [30] LOG:  checkpoint complete: wrote 38 buffers (0.2%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=3.842 s, sync=0.003 s, total=3.852 s; sync files=33, longest=0.002 s, average=0.001 s; distance=201 kB, estimate=224 kB; lsn=0/2D51B80, redo lsn=0/2D51B28
+pgvector-pg18  | 2026-11-13 18:56:15.563 CST [16064] ERROR:  expected 256 dimensions, not 3
+pgvector-pg18  | 2026-11-13 18:56:15.563 CST [16064] STATEMENT:  INSERT INTO "public"."d30_vector_store" (content, embedding) VALUES ($1, '[1,2,3]'::vector)
+pgvector-pg18  | 2026-11-13 18:58:48.740 CST [30] LOG:  checkpoint starting: time
+pgvector-pg18  | 2026-11-13 18:58:49.757 CST [30] LOG:  checkpoint complete: wrote 10 buffers (0.1%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=1.010 s, sync=0.002 s, total=1.017 s; sync files=7, longest=0.002 s, average=0.001 s; distance=48 kB, estimate=206 kB; lsn=0/2D5DFA8, redo lsn=0/2D5DF18
+pgvector-pg18  | 2026-11-13 19:00:54.122 CST [16260] LOG:  could not receive data from client: Connection reset by peer
+pgvector-pg18  | 2026-11-13 19:03:48.858 CST [30] LOG:  checkpoint starting: time
+pgvector-pg18  | 2026-11-13 19:03:49.574 CST [30] LOG:  checkpoint complete: wrote 7 buffers (0.0%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.708 s, sync=0.002 s, total=0.717 s; sync files=5, longest=0.002 s, average=0.001 s; distance=32 kB, estimate=189 kB; lsn=0/2D66308, redo lsn=0/2D662B0
+pgvector-pg18  | 2026-11-13 19:09:10.811 CST [17334] ERROR:  column "id" is of type uuid but expression is of type character varying at character 85
+pgvector-pg18  | 2026-11-13 19:09:10.811 CST [17334] HINT:  You will need to rewrite or cast the expression.
+pgvector-pg18  | 2026-11-13 19:09:10.811 CST [17334] STATEMENT:  INSERT INTO public.d30_vector_smoke_test (id, content, metadata, embedding) VALUES ($1, '错误维度', '{}'::json, $2)
+pgvector-pg18  | 2026-11-13 19:10:29.275 CST [17460] ERROR:  column "id" is of type uuid but expression is of type character varying at character 85
+pgvector-pg18  | 2026-11-13 19:10:29.275 CST [17460] HINT:  You will need to rewrite or cast the expression.
+pgvector-pg18  | 2026-11-13 19:10:29.275 CST [17460] STATEMENT:  INSERT INTO public.d30_vector_smoke_test (id, content, metadata, embedding) VALUES ($1, '错误维度', '{}'::json, $2)
+pgvector-pg18  | 2026-11-13 19:11:28.077 CST [17567] ERROR:  expected 256 dimensions, not 3
+pgvector-pg18  | 2026-11-13 19:11:28.077 CST [17567] STATEMENT:  INSERT INTO "public"."d30_vector_store" (content, embedding) VALUES ($1, '[1,2,3]'::vector)
+pgvector-pg18  | 2026-11-13 19:13:38.354 CST [17558] LOG:  could not receive data from client: Connection reset by peer
+pgvector-pg18  | 2026-11-13 19:13:48.771 CST [30] LOG:  checkpoint starting: time
+pgvector-pg18  | 2026-11-13 19:13:53.932 CST [30] LOG:  checkpoint complete: wrote 51 buffers (0.3%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=5.154 s, sync=0.002 s, total=5.161 s; sync files=34, longest=0.001 s, average=0.001 s; distance=297 kB, estimate=297 kB; lsn=0/2DB0768, redo lsn=0/2DB06D8
+pgvector-pg18  | 2026-11-13 19:16:58.933 CST [18012] LOG:  could not receive data from client: Connection reset by peer
+pgvector-pg18  | 2026-11-13 19:16:58.934 CST [18013] LOG:  could not receive data from client: Connection reset by peer
+pgvector-pg18  | 2026-11-13 19:18:48.982 CST [30] LOG:  checkpoint starting: time
+pgvector-pg18  | 2026-11-13 19:18:49.696 CST [30] LOG:  checkpoint complete: wrote 7 buffers (0.0%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.708 s, sync=0.002 s, total=0.715 s; sync files=5, longest=0.002 s, average=0.001 s; distance=26 kB, estimate=270 kB; lsn=0/2DB7228, redo lsn=0/2DB71D0
+===== PSQL SERVER/DB/EXTENSION =====
+PostgreSQL 18.7 (Debian 18.7-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+spring_ai
+vector|0.8.7
+===== VOLUME/MOUNTS =====
+bind||/docker-entrypoint-initdb.d
+volume|pgvector-stack_pg18_data|/var/lib/postgresql
+
+===== TABLE CHECK =====
+f

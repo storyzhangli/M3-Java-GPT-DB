@@ -21,12 +21,13 @@ spring:
     # D30 新增：pgvector 专用 PostgreSQL 数据源（与上方 MySQL 主库完全隔离）。
     # 绑定目标是 com.zaxxer.hikari.HikariConfig，所以所有键必须与 Hikari setter 同层；
     # 写成 pg.hikari.pool-name 这类嵌套节点不会被绑定（ignoreUnknownFields=false 会启动即失败）。
-    # 凭据统一 ${ENV:default}：冒号后仅为本机开发默认值，生产环境必须用环境变量覆盖。
+    # 凭据统一由环境变量注入：PG_PASSWORD 不提供仓库默认值，避免真实口令进入 Git。
+    # 本地运行/集成测试前必须设置 PG_PASSWORD；缺失时首次建立连接会明确失败。
     # ------------------------------------------------------------------
     pg:
       jdbc-url: ${PG_URL:jdbc:postgresql://192.168.200.153:5432/spring_ai}
       username: ${PG_USER:postgres}
-      password: ${PG_PASSWORD:Postgres@2026}
+      password: ${PG_PASSWORD}
       driver-class-name: org.postgresql.Driver
       pool-name: ${PG_POOL_NAME:PgVectorHikariPool}
       maximum-pool-size: ${PG_POOL_MAX:10}

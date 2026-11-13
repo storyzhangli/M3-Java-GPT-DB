@@ -1,0 +1,29 @@
+===== docker-compose.yml (redacted locally) =====
+services:
+  postgres:
+    image: pgvector/pgvector:pg18
+    container_name: pgvector-pg18
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ***REDACTED***
+      POSTGRES_DB: spring_ai
+      TZ: Asia/Shanghai
+    volumes:
+      - pg18_data:/var/lib/postgresql
+      - ./init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d spring_ai"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    shm_size: 256mb
+
+volumes:
+  pg18_data:
+===== PSQL VERSION =====
+spring_ai|PostgreSQL 18.7 (Debian 18.7-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+===== PSQL EXTENSION =====
+vector|0.8.7

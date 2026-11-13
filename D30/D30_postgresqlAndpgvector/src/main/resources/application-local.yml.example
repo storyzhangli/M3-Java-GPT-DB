@@ -13,7 +13,19 @@
 #        $env:AI_MODE="deepseek"
 #        $env:AI_API_KEY="sk-你的真实密钥"
 # 4. D22 起模型连接统一收敛到 app.ai.*，不再存在 spring.ai.deepseek.* 配置。
+# 5. D30 PG 口令不得写入本模板或主配置；复制本文件后仍通过 PG_PASSWORD 环境变量注入。
 # ============================================================================
+spring:
+  datasource:
+    pg:
+      jdbc-url: ${PG_URL:jdbc:postgresql://192.168.200.153:5432/spring_ai}
+      username: ${PG_USER:postgres}
+      password: ${PG_PASSWORD}
+      driver-class-name: org.postgresql.Driver
+      pool-name: ${PG_POOL_NAME:PgVectorHikariPool}
+      maximum-pool-size: ${PG_POOL_MAX:10}
+      minimum-idle: ${PG_POOL_MIN:2}
+
 app:
   ai:
     mode: ${AI_MODE:deepseek}
