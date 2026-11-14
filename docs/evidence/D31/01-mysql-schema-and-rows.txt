@@ -1,0 +1,95 @@
+MYSQL_DATABASE=ai_db
+=== knowledge_document ===
+CREATE TABLE `knowledge_document` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `document_id` varchar(64) NOT NULL,
+  `source_system` varchar(128) NOT NULL,
+  `title` varchar(300) NOT NULL,
+  `version` varchar(64) NOT NULL,
+  `status` varchar(16) NOT NULL,
+  `file_name` varchar(255) DEFAULT NULL,
+  `content_type` varchar(128) DEFAULT NULL,
+  `file_size` bigint DEFAULT NULL,
+  `content_hash` char(64) DEFAULT NULL,
+  `error_code` varchar(64) NOT NULL DEFAULT '',
+  `error_message` varchar(500) NOT NULL DEFAULT '',
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_knowledge_document_id` (`document_id`),
+  UNIQUE KEY `uk_document_content_hash` (`document_id`,`content_hash`),
+  KEY `idx_knowledge_doc_status` (`status`,`updated_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=429 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='D26 ֪ʶ�ĵ�Ԫ�����뵼��״̬'
+ROW_COUNT|knowledge_document=0
+=== knowledge_document_page ===
+CREATE TABLE `knowledge_document_page` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `document_id` varchar(64) NOT NULL,
+  `page_number` int NOT NULL,
+  `content` longtext NOT NULL,
+  `character_count` int NOT NULL,
+  `blank_page` tinyint(1) NOT NULL,
+  `parser_name` varchar(64) NOT NULL,
+  `parser_version` varchar(32) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_knowledge_document_page` (`document_id`,`page_number`),
+  KEY `idx_knowledge_document_page_doc` (`document_id`,`page_number`)
+) ENGINE=InnoDB AUTO_INCREMENT=297 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='D27 PDF ����ҳ���ı�����Դ��λ'
+ROW_COUNT|knowledge_document_page=0
+=== vector_index_task ===
+CREATE TABLE `vector_index_task` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '��������',
+  `document_id` varchar(64) NOT NULL COMMENT '�ĵ�ҵ���ʶ',
+  `version` varchar(64) NOT NULL COMMENT '�ĵ��汾��ҵ�������',
+  `strategy` varchar(32) NOT NULL COMMENT '�зֲ��� FIXED_LENGTH/STRUCTURE_AWARE',
+  `content_hash` char(64) NOT NULL COMMENT '�����غ�ָ�� SHA-256��chunkIndex:content ƴ�ӣ�',
+  `split_version` varchar(64) NOT NULL COMMENT '�з��㷨�汾�������ȶ� ID��',
+  `vector_space_id` varchar(128) NOT NULL COMMENT '�����ռ��ʶ��ģ��+�汾+ά�ȣ������ȶ� ID��',
+  `chunk_count` int NOT NULL DEFAULT '0' COMMENT '�ð汾 Chunk ����',
+  `status` varchar(16) NOT NULL DEFAULT 'PENDING' COMMENT 'PENDING/INDEXING/COMPLETED/PARTIAL/FAILED/SUPERSEDED',
+  `stage` varchar(24) NOT NULL DEFAULT '' COMMENT '������׶Σ�REGISTER/EMBED_WRITE/VERIFY/SWITCH/CLEANUP',
+  `error_code` varchar(64) NOT NULL DEFAULT '' COMMENT 'ʧ�ܴ����루������ջ��ƾ�ݣ�',
+  `error_message` varchar(500) NOT NULL DEFAULT '' COMMENT '��ȫ����ժҪ',
+  `attempt_count` int NOT NULL DEFAULT '0' COMMENT '�ѳ��Դ��������״Σ�',
+  `next_retry_at` datetime(6) DEFAULT NULL COMMENT '�´μƻ�����ʱ�䣬NULL ��ʾ���ȴ�',
+  `created_at` datetime(6) NOT NULL COMMENT '����ʱ��',
+  `updated_at` datetime(6) NOT NULL COMMENT '״̬����ʱ��',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_vector_task_doc_version` (`document_id`,`version`),
+  KEY `idx_vector_task_status_retry` (`status`,`next_retry_at`),
+  KEY `idx_vector_task_status_updated` (`status`,`updated_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='D31 �ĵ���������״̬����״̬�������� Outbox��'
+ROW_COUNT|vector_index_task=0
+=== vector_chunk_index ===
+CREATE TABLE `vector_chunk_index` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '��������',
+  `document_id` varchar(64) NOT NULL COMMENT '�����ĵ�ҵ���ʶ',
+  `version` varchar(64) NOT NULL COMMENT '�����ĵ��汾',
+  `strategy` varchar(32) NOT NULL COMMENT '�зֲ���',
+  `chunk_id` char(36) NOT NULL COMMENT '�ȶ� Chunk ��ʶ��UUID v5��36 �ַ������ߣ�',
+  `chunk_index` int NOT NULL COMMENT '�汾������ڵ� Chunk ˳�򣬴� 0 ��ʼ',
+  `content` mediumtext NOT NULL COMMENT 'Chunk �ı����գ�Outbox �غɣ���ȱʧ�ؽ���',
+  `chunk_content_hash` char(64) NOT NULL COMMENT 'Chunk �ı�����ָ�� SHA-256',
+  `character_count` int NOT NULL COMMENT 'Chunk �ַ����ȣ�Unicode ��㣩',
+  `page_numbers` varchar(255) NOT NULL DEFAULT '' COMMENT '��Դҳ�룬���ŷָ����ɿմ���',
+  `status` varchar(16) NOT NULL DEFAULT 'PENDING' COMMENT '����״̬ PENDING/INDEXED/FAILED',
+  `created_at` datetime(6) NOT NULL COMMENT '����ʱ��',
+  `updated_at` datetime(6) NOT NULL COMMENT '����ʱ��',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_vector_chunk_chunk_id` (`chunk_id`),
+  UNIQUE KEY `uk_vector_chunk_doc_version_index` (`document_id`,`version`,`chunk_index`),
+  KEY `idx_vector_chunk_document` (`document_id`,`version`)
+) ENGINE=InnoDB AUTO_INCREMENT=588 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='D31 Chunk �ȶ����������ݵȼ���¶��˶ԣ�'
+ROW_COUNT|vector_chunk_index=0
+=== UNIQUE_INDEXES ===
+UNIQUE|knowledge_document|PRIMARY|id|non_unique=0
+UNIQUE|knowledge_document|uk_document_content_hash|document_id,content_hash|non_unique=0
+UNIQUE|knowledge_document|uk_knowledge_document_id|document_id|non_unique=0
+UNIQUE|knowledge_document_page|PRIMARY|id|non_unique=0
+UNIQUE|knowledge_document_page|uk_knowledge_document_page|document_id,page_number|non_unique=0
+UNIQUE|vector_chunk_index|PRIMARY|id|non_unique=0
+UNIQUE|vector_chunk_index|uk_vector_chunk_chunk_id|chunk_id|non_unique=0
+UNIQUE|vector_chunk_index|uk_vector_chunk_doc_version_index|document_id,version,chunk_index|non_unique=0
+UNIQUE|vector_index_task|PRIMARY|id|non_unique=0
+UNIQUE|vector_index_task|uk_vector_task_doc_version|document_id,version|non_unique=0

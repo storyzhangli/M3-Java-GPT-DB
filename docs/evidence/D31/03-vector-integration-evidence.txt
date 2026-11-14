@@ -1,0 +1,31 @@
+D31_VECTOR_INTEGRATION_EVIDENCE
+RUN_AT=2026-11-15T02:38:49+08:00
+GATE=D31_VECTOR_IT=true
+DATABASES=MySQL ai_db + PostgreSQL spring_ai/pgvector
+
+D31_EVIDENCE|sameContent|first|documentId=dc92537fa2b5ca622c391c90b8ba2082|documentStatus=COMPLETED|documentVersion=1|chunks=4|currentChunkIds=[0049b502-3d05-573d-ac12-6aecfc50582b, 54a97e4c-c3ef-513f-8249-452cc2ab6d1d, a0e232f8-9873-5e7f-964a-88123a7fd20e, 335dbf9c-f744-52a8-890c-61c4d2374502]|vectors=4|tasks=[1:COMPLETED:attempt=1]
+D31_EVIDENCE|sameContent|second|documentId=5ed6aee12e2eeea84c7c7604387ed9e2|documentStatus=COMPLETED|documentVersion=1|chunks=4|currentChunkIds=[128a065c-81f2-58ca-9969-5e13fb5ff58e, 0c919b63-3aa5-5f06-b50d-32a154ca7a8d, f7173384-22ba-5255-872d-a406e3974d0c, 4764ae8a-b275-580b-bb52-cc490a8493d9]|vectors=4|tasks=[1:COMPLETED:attempt=1]
+D31_FAILED_STATE|status=FAILED|indexed=0|total=3|failed=3|vectors=0
+D31_EVIDENCE|failedRetry|afterAllFailed|documentId=f5bc088ee84b6ff53720abdfeeb700b0|documentStatus=COMPLETED|documentVersion=1|chunks=3|currentChunkIds=[fd832c8b-8c96-5341-a08c-4823f117a97f, 6b1a10bd-0d53-5d48-bcea-e153d5c72029, 5f5067a1-9385-57f6-b505-8285b0745a9d]|vectors=0|tasks=[1:FAILED:attempt=1]
+D31_EVIDENCE|failedRetry|afterRetryRecovered|documentId=f5bc088ee84b6ff53720abdfeeb700b0|documentStatus=COMPLETED|documentVersion=1|chunks=3|currentChunkIds=[fd832c8b-8c96-5341-a08c-4823f117a97f, 6b1a10bd-0d53-5d48-bcea-e153d5c72029, 5f5067a1-9385-57f6-b505-8285b0745a9d]|vectors=3|tasks=[1:COMPLETED:attempt=2]
+D31_PARTIAL_STATE|status=PARTIAL|indexed=4|total=5|failed=1|vectors=4
+D31_EVIDENCE|partialRetry|afterPartialFailure|documentId=9cd0ba6d21b67edc174a015d6884dc8e|documentStatus=COMPLETED|documentVersion=1|chunks=5|currentChunkIds=[b010b6a9-97a7-545b-8ab2-a4c902d3a4be, 35d80e4b-5cad-559b-9d51-eb470d40c7db, 7659a077-47a8-558f-9ab3-fbffa2598fb4, f047d62d-3cf4-563b-9aa5-8eb5dec5536e, 5a5a7749-528d-5120-addd-60e969f2da58]|vectors=4|tasks=[1:PARTIAL:attempt=1]
+D31_EVIDENCE|partialRetry|afterRetryRecovered|documentId=9cd0ba6d21b67edc174a015d6884dc8e|documentStatus=COMPLETED|documentVersion=1|chunks=5|currentChunkIds=[b010b6a9-97a7-545b-8ab2-a4c902d3a4be, 35d80e4b-5cad-559b-9d51-eb470d40c7db, 7659a077-47a8-558f-9ab3-fbffa2598fb4, f047d62d-3cf4-563b-9aa5-8eb5dec5536e, 5a5a7749-528d-5120-addd-60e969f2da58]|vectors=5|tasks=[1:COMPLETED:attempt=2]
+D31_EVIDENCE|lifecycle|afterNewImport|documentId=80826eea7399ad9108074a119069c0ef|documentStatus=COMPLETED|documentVersion=1|chunks=0|currentChunkIds=[]|vectors=0|tasks=[]
+D31_EVIDENCE|lifecycle|afterDuplicateImport|documentId=80826eea7399ad9108074a119069c0ef|documentStatus=COMPLETED|documentVersion=1|chunks=0|currentChunkIds=[]|vectors=0|tasks=[]
+D31_EVIDENCE|lifecycle|afterFirstIndex|documentId=80826eea7399ad9108074a119069c0ef|documentStatus=COMPLETED|documentVersion=1|chunks=3|currentChunkIds=[73872083-1fd2-5966-b59f-fe66f533644e, f9e2810b-b89b-5809-8568-e98a22a76d3e, 13378c13-dce3-5147-bbe5-0606e1ca6d7e]|vectors=3|tasks=[1:COMPLETED:attempt=1]
+D31_EVIDENCE|lifecycle|afterDuplicateIndex|documentId=80826eea7399ad9108074a119069c0ef|documentStatus=COMPLETED|documentVersion=1|chunks=3|currentChunkIds=[73872083-1fd2-5966-b59f-fe66f533644e, f9e2810b-b89b-5809-8568-e98a22a76d3e, 13378c13-dce3-5147-bbe5-0606e1ca6d7e]|vectors=3|tasks=[1:COMPLETED:attempt=1]
+D31_EVIDENCE|lifecycle|afterVersion2Import|documentId=80826eea7399ad9108074a119069c0ef|documentStatus=COMPLETED|documentVersion=2|chunks=3|currentChunkIds=[]|vectors=3|tasks=[1:COMPLETED:attempt=1]
+D31_EVIDENCE|lifecycle|afterVersion2Failed|documentId=80826eea7399ad9108074a119069c0ef|documentStatus=COMPLETED|documentVersion=2|chunks=8|currentChunkIds=[9696943d-2825-5f12-8827-5512965555af, 2f84f081-dbf0-59e1-87bc-42df673e6370, be75de5e-d8e0-5389-94c0-13c62a56823b, f85beb69-97ac-5b25-ae6a-0762a7fd04a9, 13c36ae4-8872-5b8c-9cfb-31bdf1085f06]|vectors=3|tasks=[1:COMPLETED:attempt=1, 2:FAILED:attempt=1]
+D31_EVIDENCE|lifecycle|afterVersion2Retry|documentId=80826eea7399ad9108074a119069c0ef|documentStatus=COMPLETED|documentVersion=2|chunks=5|currentChunkIds=[9696943d-2825-5f12-8827-5512965555af, 2f84f081-dbf0-59e1-87bc-42df673e6370, be75de5e-d8e0-5389-94c0-13c62a56823b, f85beb69-97ac-5b25-ae6a-0762a7fd04a9, 13c36ae4-8872-5b8c-9cfb-31bdf1085f06]|vectors=5|tasks=[1:SUPERSEDED:attempt=1, 2:COMPLETED:attempt=2]
+D31_EVIDENCE|lifecycle|beforeDelete|documentId=80826eea7399ad9108074a119069c0ef|documentStatus=COMPLETED|documentVersion=2|chunks=5|currentChunkIds=[9696943d-2825-5f12-8827-5512965555af, 2f84f081-dbf0-59e1-87bc-42df673e6370, be75de5e-d8e0-5389-94c0-13c62a56823b, f85beb69-97ac-5b25-ae6a-0762a7fd04a9, 13c36ae4-8872-5b8c-9cfb-31bdf1085f06]|vectors=5|tasks=[1:SUPERSEDED:attempt=1, 2:COMPLETED:attempt=2]
+D31_CONSISTENCY_STATE|phase=afterTamper|status=FAIL|missing=1|orphan=1|findings=[MISSING_VECTOR, ORPHAN_VECTOR]
+D31_GLOBAL_STATE|phase=beforeRepair|orphan=1|deleted=1
+D31_EVIDENCE|consistencyRepair|afterTamper|documentId=04c67e5b262394a821b99a6f6f8b1c82|documentStatus=COMPLETED|documentVersion=1|chunks=3|currentChunkIds=[0108520d-bf4b-5673-818b-ad76b23c59e2, 087bd86b-ce04-553d-bf68-bf043173e528, c5705f23-2cb9-5caa-aa6f-b0dfd6900ba5]|vectors=2|tasks=[1:COMPLETED:attempt=1]
+D31_CONSISTENCY_STATE|phase=afterRepair|status=PASS|missing=0|orphan=0|findings=[]
+D31_CONSISTENCY_STATE|phase=ledgerMismatch|status=FAIL|findings=[CHUNK_NOT_INDEXED]
+D31_EVIDENCE|consistencyRepair|afterRepair|documentId=04c67e5b262394a821b99a6f6f8b1c82|documentStatus=COMPLETED|documentVersion=1|chunks=3|currentChunkIds=[0108520d-bf4b-5673-818b-ad76b23c59e2, 087bd86b-ce04-553d-bf68-bf043173e528, c5705f23-2cb9-5caa-aa6f-b0dfd6900ba5]|vectors=3|tasks=[1:COMPLETED:attempt=2]
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.36 s -- in com.zl.d31.document.vector.D31VectorIndexIntegrationTest
+[INFO] Results:
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS

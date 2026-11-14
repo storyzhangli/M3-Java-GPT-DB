@@ -30,7 +30,8 @@ class DocumentRegistrationServiceTest {
     void setUp() {
         mapper = mock(KnowledgeDocumentMapper.class);
         DocumentConverter converter = new DocumentConverter();
-        service = new DocumentRegistrationService(mapper, converter, new DocumentImportProperties());
+        service = new DocumentRegistrationService(mapper, converter,
+                new DocumentImportProperties(), new com.zl.d31.document.support.StableIdGenerator());
     }
 
     @Test
@@ -68,7 +69,11 @@ class DocumentRegistrationServiceTest {
         request.setSource("manual");
         request.setTitle("title");
         request.setDocumentId("ext-123");
-        when(mapper.selectOne(any())).thenReturn(new com.zl.d31.document.po.KnowledgeDocumentPO());
+        com.zl.d31.document.po.KnowledgeDocumentPO existing =
+                new com.zl.d31.document.po.KnowledgeDocumentPO();
+        existing.setDocumentId("ext-123");
+        existing.setStatus("COMPLETED");
+        when(mapper.selectOne(any())).thenReturn(existing);
 
         assertThatThrownBy(() -> service.register(request))
                 .isInstanceOf(DocumentValidationException.class)

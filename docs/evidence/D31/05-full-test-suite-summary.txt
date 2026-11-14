@@ -1,0 +1,19 @@
+D31_FULL_TEST_SUMMARY
+COMMAND=mvn -f D31/pom.xml -pl D31_VSUAI clean test
+ENV=D31_VECTOR_IT=true; D31_PG_IT=true
+RUN_AT=2026-11-15T02:56:15+08:00
+CLEAN_BUILD=target deleted, 211 source files compiled
+
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.260 s -- in com.zl.d31.TraceIdHttpTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 294, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  58.938 s
+[INFO] Finished at: 2026-11-15T02:56:15+08:00
+[INFO] ------------------------------------------------------------------------
+

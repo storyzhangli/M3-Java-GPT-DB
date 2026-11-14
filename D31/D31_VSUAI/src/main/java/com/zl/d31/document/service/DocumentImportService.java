@@ -1,6 +1,8 @@
 package com.zl.d31.document.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.zl.d31.document.config.DocumentImportProperties;
 import com.zl.d31.document.dto.DocumentImportView;
 import com.zl.d31.document.exception.DocumentParseException;
 import com.zl.d31.document.exception.DocumentValidationException;
@@ -9,12 +11,12 @@ import com.zl.d31.document.model.DocumentPageContent;
 import com.zl.d31.document.model.DocumentStatus;
 import com.zl.d31.document.model.KnowledgeDocument;
 import com.zl.d31.document.po.KnowledgeDocumentPO;
-import com.zl.d31.document.service.DocumentPageService;
 import com.zl.d31.document.support.BasicDocumentParser;
 import com.zl.d31.document.support.DocumentConverter;
 import com.zl.d31.document.support.FileUploadValidator;
 import com.zl.d31.document.support.PdfDocumentParser;
 import com.zl.d31.document.support.Sha256ContentHasher;
+import com.zl.d31.document.support.StableIdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
@@ -24,14 +26,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 /**
- * 文档导入服务：服务端校验、contentHash 去重、状态机驱动与解析。
+ * 文档导入服务：服务端校验、内容指纹、稳定文档 ID、状态机驱动与解析。
  *
- * <p>按文件类型路由：PDF 走 {@link PdfDocumentParser} 并持久化页面级来源定位，
- * 文本走 {@link BasicDocumentParser}。同步处理，保证从 PROCESSING 收敛到
- * COMPLETED 或 FAILED，不吞异常、不伪造成功。</p>
+ * <p>D31 语义变更：</p>
+ * <ul>
+ *   <li>新文档不再使用随机 UUID，而由 source + title 派生稳定 documentId；</li>
+ *   <li>同一 documentId 内容变化时版本递增，旧版本数据保留到新版本向量切换成功；</li>
+ *   <li>不同文档只要 documentId/source/title 不同，即使内容相同也可各自成档；</li>
+ *   <li>文本文件也写入 page 1，保证后续 Chunk/向量入库有真实页面来源。</li>
+ * </ul>
  */
 @Service
 public class DocumentImportService {
@@ -45,6 +50,8 @@ public class DocumentImportService {
     private final DocumentPageService pageService;
     private final KnowledgeDocumentMapper mapper;
     private final DocumentConverter converter;
+    private final DocumentImportProperties properties;
+    private final StableIdGenerator idGenerator;
 
     public DocumentImportService(FileUploadValidator validator,
                                  Sha256ContentHasher hasher,
@@ -52,7 +59,9 @@ public class DocumentImportService {
                                  PdfDocumentParser pdfParser,
                                  DocumentPageService pageService,
                                  KnowledgeDocumentMapper mapper,
-                                 DocumentConverter converter) {
+                                 DocumentConverter converter,
+                                 DocumentImportProperties properties,
+                                 StableIdGenerator idGenerator) {
         this.validator = validator;
         this.hasher = hasher;
         this.parser = parser;
@@ -60,10 +69,12 @@ public class DocumentImportService {
         this.pageService = pageService;
         this.mapper = mapper;
         this.converter = converter;
+        this.properties = properties;
+        this.idGenerator = idGenerator;
     }
 
     /**
-     * 导入文件。documentId 非空时关联已登记文档，否则用 source/title 新建。
+     * 导入文件。documentId 非空时关联已登记文档，否则用 source/title 的稳定身份新建。
      */
     @Transactional
     public DocumentImportView importFile(MultipartFile file, String documentId, String source, String title) {
@@ -71,20 +82,25 @@ public class DocumentImportService {
         String contentHash = hasher.hash(bytes);
         LocalDateTime now = LocalDateTime.now();
 
-        KnowledgeDocument byHash = findByHash(contentHash);
-        // FAILED 文档允许同内容重新导入重试，其余状态命中重复直接返回。
-        if (byHash != null && byHash.getStatus() != DocumentStatus.FAILED) {
-            return buildImportView(true, byHash);
+        KnowledgeDocument existing = findTarget(documentId, source, title, contentHash);
+        if (existing != null && sameHash(existing, contentHash)
+                && existing.getStatus() == DocumentStatus.COMPLETED) {
+            return buildImportView(true, existing);
         }
 
         KnowledgeDocument doc;
-        if (byHash != null) {
-            doc = byHash;
+        if (existing != null) {
+            doc = existing;
+            if (hasContentHash(existing) && !sameHash(existing, contentHash)) {
+                // 内容变化：版本递增；旧版本向量保留，等待新版本成功切换后再清理。
+                doc.setVersion(nextVersion(existing.getVersion()));
+            }
             doc.setStatus(DocumentStatus.PROCESSING);
             doc.setUpdatedAt(now);
         } else {
-            doc = resolveDocument(documentId, source, title);
+            doc = newDocument(documentId, source, title, contentHash, now);
         }
+
         doc.setContentHash(contentHash);
         doc.setContentLength((long) bytes.length);
         doc.setErrorCode("");
@@ -98,18 +114,20 @@ public class DocumentImportService {
         if (isPdf(file)) {
             handlePdf(bytes, doc, now);
         } else {
-            handleText(bytes, doc);
+            handleText(bytes, doc, now);
         }
 
         doc.setUpdatedAt(LocalDateTime.now());
-        mapper.updateById(converter.toPO(doc));
+        // 按唯一业务键更新终态，避免部分 JDBC/MyBatis 场景下自增主键未回填导致 updateById 静默 0 行。
+        mapper.update(converter.toPO(doc),
+                new UpdateWrapper<KnowledgeDocumentPO>().eq("document_id", doc.getDocumentId()));
         return buildImportView(false, doc);
     }
 
     private void handlePdf(byte[] bytes, KnowledgeDocument doc, LocalDateTime now) {
         try {
             List<DocumentPageContent> pages = pdfParser.parse(bytes);
-            preparePages(doc, pages, now);
+            preparePages(doc, pages, now, "PdfDocumentParser", "PDFBox-3.0.7");
             pageService.replacePages(pages);
             boolean anyUsable = pages.stream().anyMatch(p -> !Boolean.TRUE.equals(p.getBlank()));
             if (anyUsable) {
@@ -126,9 +144,23 @@ public class DocumentImportService {
         }
     }
 
-    private void handleText(byte[] bytes, KnowledgeDocument doc) {
+    private void handleText(byte[] bytes, KnowledgeDocument doc, LocalDateTime now) {
         try {
-            parser.parse(bytes);
+            String text = parser.parse(bytes);
+            DocumentPageContent page = new DocumentPageContent();
+            page.setDocumentId(doc.getDocumentId());
+            page.setSource(doc.getSource());
+            page.setTitle(doc.getTitle());
+            page.setVersion(doc.getVersion());
+            page.setPageNumber(1);
+            page.setContent(text);
+            page.setContentLength(text.length());
+            page.setBlank(false);
+            page.setParserName("BasicDocumentParser");
+            page.setParserVersion("D31");
+            page.setCreatedAt(now);
+            page.setUpdatedAt(now);
+            pageService.replacePages(List.of(page));
             doc.setStatus(DocumentStatus.COMPLETED);
         } catch (DocumentParseException e) {
             markFailed(doc, "PARSE_FAILED", e.getMessage());
@@ -138,12 +170,15 @@ public class DocumentImportService {
         }
     }
 
-    private void preparePages(KnowledgeDocument doc, List<DocumentPageContent> pages, LocalDateTime now) {
+    private void preparePages(KnowledgeDocument doc, List<DocumentPageContent> pages,
+                              LocalDateTime now, String parserName, String parserVersion) {
         for (DocumentPageContent page : pages) {
             page.setDocumentId(doc.getDocumentId());
             page.setSource(doc.getSource());
             page.setTitle(doc.getTitle());
             page.setVersion(doc.getVersion());
+            page.setParserName(parserName);
+            page.setParserVersion(parserVersion);
             page.setCreatedAt(now);
             page.setUpdatedAt(now);
         }
@@ -158,27 +193,50 @@ public class DocumentImportService {
         return dot >= 0 && "pdf".equalsIgnoreCase(name.substring(dot + 1));
     }
 
-    private KnowledgeDocument findByHash(String contentHash) {
-        KnowledgeDocumentPO po = mapper.selectOne(
-                new QueryWrapper<KnowledgeDocumentPO>().eq("content_hash", contentHash));
-        return converter.toDomain(po);
-    }
-
-    private KnowledgeDocument resolveDocument(String documentId, String source, String title) {
-        LocalDateTime now = LocalDateTime.now();
+    /**
+     * 定位本次导入的目标文档。
+     *
+     * <p>显式 documentId 优先；其次 source + title 的稳定身份；只有两者都缺失时，
+     * 才退化为内容指纹去重（该路径无法区分内容相同的不同文档，调用方应补业务身份）。</p>
+     */
+    private KnowledgeDocument findTarget(String documentId, String source, String title, String contentHash) {
         if (documentId != null && !documentId.isBlank()) {
-            KnowledgeDocument existing = findByDocumentId(documentId.trim());
-            existing.setStatus(DocumentStatus.PROCESSING);
-            existing.setUpdatedAt(now);
+            KnowledgeDocument existing = findByIdOrNull(documentId.trim());
+            if (existing == null) {
+                throw new DocumentValidationException("文档不存在: " + documentId.trim());
+            }
             return existing;
         }
-        if (source == null || source.isBlank() || title == null || title.isBlank()) {
-            throw new DocumentValidationException("新建导入必须提供文档来源与标题");
+        if (source != null && !source.isBlank() && title != null && !title.isBlank()) {
+            return findByIdOrNull(idGenerator.documentId(source, title));
         }
+        List<KnowledgeDocument> byHash = findByHash(contentHash);
+        return byHash.isEmpty() ? null : byHash.get(0);
+    }
+
+    private KnowledgeDocument newDocument(String documentId, String source, String title,
+                                          String contentHash, LocalDateTime now) {
+        if (documentId != null && !documentId.isBlank()) {
+            throw new DocumentValidationException("文档不存在: " + documentId.trim());
+        }
+        String resolvedSource;
+        String resolvedTitle;
+        String resolvedId;
+        if (source != null && !source.isBlank() && title != null && !title.isBlank()) {
+            resolvedSource = source.trim();
+            resolvedTitle = safeTitle(title);
+            resolvedId = idGenerator.documentId(resolvedSource, resolvedTitle);
+        } else {
+            // 无业务身份的兼容路径：仅按内容指纹生成；不同文档相同内容无法区分。
+            resolvedSource = "unspecified";
+            resolvedTitle = "content-" + contentHash.substring(0, Math.min(12, contentHash.length()));
+            resolvedId = idGenerator.fileDocumentId(contentHash);
+        }
+
         KnowledgeDocument doc = new KnowledgeDocument();
-        doc.setDocumentId(UUID.randomUUID().toString().replace("-", ""));
-        doc.setSource(source.trim());
-        doc.setTitle(title.trim());
+        doc.setDocumentId(resolvedId);
+        doc.setSource(resolvedSource);
+        doc.setTitle(resolvedTitle);
         doc.setVersion(1);
         doc.setStatus(DocumentStatus.PROCESSING);
         doc.setCreatedAt(now);
@@ -186,12 +244,36 @@ public class DocumentImportService {
         return doc;
     }
 
-    private KnowledgeDocument findByDocumentId(String documentId) {
+    private String safeTitle(String title) {
+        String trimmed = title.trim();
+        int max = properties.getTitleMaxLength();
+        return trimmed.length() > max ? trimmed.substring(0, max) : trimmed;
+    }
+
+    private boolean sameHash(KnowledgeDocument doc, String contentHash) {
+        return contentHash != null && contentHash.equals(doc.getContentHash());
+    }
+
+    private boolean hasContentHash(KnowledgeDocument doc) {
+        return doc.getContentHash() != null && !doc.getContentHash().isBlank();
+    }
+
+    private int nextVersion(Integer current) {
+        return current == null ? 1 : current + 1;
+    }
+
+    /**
+     * 兼容路径可能命中多个同内容文档（D31 已允许不同文档相同内容），只取第一条用于去重。
+     */
+    private List<KnowledgeDocument> findByHash(String contentHash) {
+        List<KnowledgeDocumentPO> rows = mapper.selectList(
+                new QueryWrapper<KnowledgeDocumentPO>().eq("content_hash", contentHash));
+        return rows.stream().map(converter::toDomain).toList();
+    }
+
+    private KnowledgeDocument findByIdOrNull(String documentId) {
         KnowledgeDocumentPO po = mapper.selectOne(
                 new QueryWrapper<KnowledgeDocumentPO>().eq("document_id", documentId));
-        if (po == null) {
-            throw new DocumentValidationException("文档不存在: " + documentId);
-        }
         return converter.toDomain(po);
     }
 
@@ -200,10 +282,9 @@ public class DocumentImportService {
             try {
                 mapper.insert(converter.toPO(doc));
             } catch (DuplicateKeyException e) {
-                // 并发重复：唯一约束兜底，在异常到达事务拦截器前于方法内捕获，
-                // 事务正常提交，既有行不受影响，按重复响应返回。
-                KnowledgeDocument existing = findByHash(doc.getContentHash());
-                if (existing != null) {
+                // 并发同文档同内容：唯一约束兜底。事务在方法内捕获，既有行不受影响。
+                KnowledgeDocument existing = findByIdOrNull(doc.getDocumentId());
+                if (existing != null && sameHash(existing, doc.getContentHash())) {
                     return buildImportView(true, existing);
                 }
                 throw e;

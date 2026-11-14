@@ -60,4 +60,11 @@ public class DocumentPageService {
                         .eq("document_id", documentId)
                         .eq("page_number", pageNumber)));
     }
+
+    /**
+     * 删除某文档的全部页面行（文档删除时调用，空文档也安全）。
+     */
+    public void deletePages(String documentId) {
+        mapper.delete(new QueryWrapper<DocumentPageContentPO>().eq("document_id", documentId));
+    }
 }

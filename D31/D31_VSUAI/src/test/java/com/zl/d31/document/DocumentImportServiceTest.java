@@ -35,6 +35,8 @@ class DocumentImportServiceTest {
     private DocumentPageService pageService;
     private KnowledgeDocumentMapper mapper;
     private DocumentImportService service;
+    private DocumentImportProperties properties;
+    private StableIdGenerator idGenerator;
 
     @BeforeEach
     void setUp() {
@@ -43,10 +45,12 @@ class DocumentImportServiceTest {
         pdfParser = mock(PdfDocumentParser.class);
         pageService = mock(DocumentPageService.class);
         mapper = mock(KnowledgeDocumentMapper.class);
-        BasicDocumentParser parser = new BasicDocumentParser(new DocumentImportProperties());
+        properties = new DocumentImportProperties();
+        idGenerator = new StableIdGenerator();
+        BasicDocumentParser parser = new BasicDocumentParser(properties);
         DocumentConverter converter = new DocumentConverter();
         service = new DocumentImportService(validator, hasher, parser, pdfParser,
-                pageService, mapper, converter);
+                pageService, mapper, converter, properties, idGenerator);
     }
 
     @Test
@@ -64,15 +68,17 @@ class DocumentImportServiceTest {
         assertThat(view.isDuplicate()).isFalse();
         assertThat(view.getDocument().getStatus()).isEqualTo("COMPLETED");
         verify(mapper).insert(any(KnowledgeDocumentPO.class));
-        verify(mapper).updateById(any(KnowledgeDocumentPO.class));
-        verifyNoInteractions(pageService);
+        verify(mapper).update(any(KnowledgeDocumentPO.class), any());
+        // D31：文本导入也持久化 page 1，供后续 Chunk/向量入库使用。
+        verify(pageService).replacePages(anyList());
     }
 
     @Test
     void duplicateHashReturnsExistingWithoutSecondFlow() {
         byte[] bytes = "hello".getBytes(StandardCharsets.UTF_8);
         stubCommon(bytes, "hash");
-        KnowledgeDocumentPO existing = buildPO("doc-1", "COMPLETED");
+        KnowledgeDocumentPO existing = buildPO(
+                idGenerator.documentId("manual", "标题"), "COMPLETED");
         when(mapper.selectOne(any())).thenReturn(existing);
 
         DocumentImportView view = service.importFile(
@@ -80,9 +86,10 @@ class DocumentImportServiceTest {
                 null, "manual", "标题");
 
         assertThat(view.isDuplicate()).isTrue();
-        assertThat(view.getDocument().getDocumentId()).isEqualTo("doc-1");
+        assertThat(view.getDocument().getDocumentId()).isEqualTo(existing.getDocumentId());
         verify(mapper, never()).insert(any(KnowledgeDocumentPO.class));
         verify(mapper, never()).updateById(any(KnowledgeDocumentPO.class));
+        verify(mapper, never()).update(any(KnowledgeDocumentPO.class), any());
     }
 
     @Test
@@ -107,7 +114,7 @@ class DocumentImportServiceTest {
         when(failingParser.parse(any())).thenThrow(new RuntimeException("boom"));
         DocumentImportService s = new DocumentImportService(
                 validator, hasher, failingParser, pdfParser, pageService,
-                mapper, new DocumentConverter());
+                mapper, new DocumentConverter(), properties, idGenerator);
 
         byte[] bytes = "hello".getBytes(StandardCharsets.UTF_8);
         stubCommon(bytes, "hash-x");
@@ -132,7 +139,8 @@ class DocumentImportServiceTest {
         preRegistered.setId(1L);
         preRegistered.setCreatedAt(old);
         preRegistered.setUpdatedAt(old);
-        when(mapper.selectOne(any())).thenReturn(null, preRegistered);
+        // D31：显式 documentId 只查一次 document_id。
+        when(mapper.selectOne(any())).thenReturn(preRegistered);
         when(mapper.updateById(any(KnowledgeDocumentPO.class))).thenReturn(1);
 
         service.importFile(
@@ -140,7 +148,7 @@ class DocumentImportServiceTest {
                 "doc-2", null, null);
 
         ArgumentCaptor<KnowledgeDocumentPO> captor = ArgumentCaptor.forClass(KnowledgeDocumentPO.class);
-        verify(mapper, atLeastOnce()).updateById(captor.capture());
+        verify(mapper, atLeastOnce()).update(captor.capture(), any());
         KnowledgeDocumentPO updated = captor.getAllValues().get(captor.getAllValues().size() - 1);
         assertThat(updated.getStatus()).isEqualTo("COMPLETED");
         assertThat(updated.getUpdatedAt()).isAfter(old);
@@ -150,7 +158,8 @@ class DocumentImportServiceTest {
     void concurrentDuplicateHandledByUniqueConstraint() {
         byte[] bytes = "hello".getBytes(StandardCharsets.UTF_8);
         stubCommon(bytes, "hash");
-        KnowledgeDocumentPO existing = buildPO("doc-3", "COMPLETED");
+        KnowledgeDocumentPO existing = buildPO(
+                idGenerator.documentId("manual", "标题"), "COMPLETED");
         when(mapper.selectOne(any())).thenReturn(null, existing);
         when(mapper.insert(any(KnowledgeDocumentPO.class)))
                 .thenThrow(new DuplicateKeyException("uk_content_hash"));
@@ -160,8 +169,9 @@ class DocumentImportServiceTest {
                 null, "manual", "标题");
 
         assertThat(view.isDuplicate()).isTrue();
-        assertThat(view.getDocument().getDocumentId()).isEqualTo("doc-3");
+        assertThat(view.getDocument().getDocumentId()).isEqualTo(existing.getDocumentId());
         verify(mapper, never()).updateById(any(KnowledgeDocumentPO.class));
+        verify(mapper, never()).update(any(KnowledgeDocumentPO.class), any());
     }
 
     @Test
@@ -212,7 +222,8 @@ class DocumentImportServiceTest {
     void failedDocumentRetryReParsesInsteadOfDuplicate() {
         byte[] bytes = "hello".getBytes(StandardCharsets.UTF_8);
         stubCommon(bytes, "hash");
-        KnowledgeDocumentPO failed = buildPO("doc-9", "FAILED");
+        KnowledgeDocumentPO failed = buildPO(
+                idGenerator.documentId("manual", "标题"), "FAILED");
         failed.setId(7L);
         when(mapper.selectOne(any())).thenReturn(failed);
         when(mapper.updateById(any(KnowledgeDocumentPO.class))).thenReturn(1);

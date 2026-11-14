@@ -1,0 +1,12 @@
+PG_SERVER=spring_ai|PostgreSQL 18.7 (Debian 18.7-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+PG_EXTENSION=vector|0.8.7
+EMBEDDING_TYPE=vector(384)
+=== vector_store COLUMNS ===
+COLUMN|id|uuid|uuid
+COLUMN|content|text|text
+COLUMN|metadata|json|json
+COLUMN|embedding|USER-DEFINED|vector
+=== vector_store INDEXES ===
+INDEX|spring_ai_vector_index|CREATE INDEX spring_ai_vector_index ON public.vector_store USING hnsw (embedding vector_cosine_ops)
+INDEX|vector_store_pkey|CREATE UNIQUE INDEX vector_store_pkey ON public.vector_store USING btree (id)
+VECTOR_ROWS|total=0|managed_d31=0

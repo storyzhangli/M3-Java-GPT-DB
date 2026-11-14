@@ -10,24 +10,24 @@ spring:
   application:
     name: d31_SpringAI
   # MySQL：D15_PLUS 起作为 Prompt 模板的权威持久化存储。
-  # 凭据支持环境变量注入（MYSQL_USER/MYSQL_PASSWORD），冒号后仅为本机开发默认值，生产环境必须通过环境变量覆盖。
+  # MySQL 凭据统一由环境变量注入（MYSQL_USER/MYSQL_PASSWORD），不提供仓库默认口令。
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${MYSQL_URL:jdbc:mysql://127.0.0.1:3306/ai_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
     username: ${MYSQL_USER:root}
-    password: ${MYSQL_PASSWORD:123456}
+    password: ${MYSQL_PASSWORD}
 
     # ------------------------------------------------------------------
     # D31 新增：pgvector 专用 PostgreSQL 数据源（与上方 MySQL 主库完全隔离）。
     # 绑定目标是 com.zaxxer.hikari.HikariConfig，所以所有键必须与 Hikari setter 同层；
     # 写成 pg.hikari.pool-name 这类嵌套节点不会被绑定（ignoreUnknownFields=false 会启动即失败）。
-    # 凭据统一由环境变量注入：PG_PASSWORD 不提供仓库默认值，避免真实口令进入 Git。本地内网环境不构成密码泄露问题,保留
-    # 本地运行/集成测试前必须设置 PG_PASSWORD；缺失时首次建立连接会明确失败。
+    # 凭据统一由环境变量注入：PG_PASSWORD 不提供仓库默认值，避免真实口令进入 Git。
+    # 本地运行/集成测试前必须设置 PG_PASSWORD；缺失时启动阶段绑定与首次连接均会明确失败。
     # ------------------------------------------------------------------
     pg:
       jdbc-url: ${PG_URL:jdbc:postgresql://192.168.200.153:5432/spring_ai}
       username: ${PG_USER:postgres}
-      password: ${PG_PASSWORD:Postgres@2026}
+      password: ${PG_PASSWORD}
       driver-class-name: org.postgresql.Driver
       pool-name: ${PG_POOL_NAME:PgVectorHikariPool}
       maximum-pool-size: ${PG_POOL_MAX:10}
@@ -200,6 +200,20 @@ app:
       merge-short-blocks: ${CHUNK_MERGE_SHORT:true}
       # 长度单位口径（固定，不允许改为 Token）
       length-unit: UTF16_CODE_UNIT
+    # ------------------------------------------------------------------
+    # D31 新增：向量索引入库治理。
+    # MySQL 台账是文档/Chunk/任务状态的权威存储；PG 只存向量。
+    # 跨系统不共享事务，失败通过状态机、稳定 ID 重试与一致性补偿恢复。
+    # ------------------------------------------------------------------
+    vector-index:
+      # 同一文档版本的最大尝试次数（含首次），超过后任务进入 FAILED，等待人工介入
+      max-task-attempts: ${VECTOR_INDEX_MAX_ATTEMPTS:5}
+      # 部分失败后 next_retry_at 的建议间隔（秒）
+      retry-delay-seconds: ${VECTOR_INDEX_RETRY_DELAY_SECONDS:60}
+      # 向量 metadata 中的管理标识，用于排除非 D31 写入的数据
+      managed-by: ${VECTOR_INDEX_MANAGED_BY:d31}
+      # 新版本 COMPLETED 后自动清理旧版本向量与台账
+      cleanup-old-versions: ${VECTOR_INDEX_CLEANUP_OLD:true}
     # ------------------------------------------------------------------
     # 新增：模型调用韧性（异常分类 + 超时 + 有限重试的单一责任层）。
     # 同步/流式共用此配置；仅对确认可重试的失败重试，首片段后流式不重放。

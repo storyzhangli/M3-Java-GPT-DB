@@ -58,7 +58,7 @@ public class DocumentEmbeddingService {
         }
         List<EmbeddingRecord> records = new ArrayList<>(chunks.size());
         for (Chunk chunk : chunks) {
-            records.add(embedOne(chunk));
+            records.add(embedChunk(chunk));
         }
         log.info("批量嵌入完成，数量={}，维度={}，vectorSpaceId={}",
                 records.size(), properties.getDimensions(), properties.vectorSpaceId());
@@ -67,8 +67,11 @@ public class DocumentEmbeddingService {
 
     /**
      * 单条 Chunk 嵌入：前置校验 → 重试调用 → 结果校验 → 组装记录。
+     *
+     * <p>D31 向量入库逐条调用本方法，单条失败不阻断其他 Chunk，
+     * 由上层记录部分失败并支持重试恢复。</p>
      */
-    private EmbeddingRecord embedOne(Chunk chunk) {
+    public EmbeddingRecord embedChunk(Chunk chunk) {
         String content = chunk.getContent();
         if (content == null || content.isBlank()) {
             throw EmbeddingServiceException.nonRetryable(

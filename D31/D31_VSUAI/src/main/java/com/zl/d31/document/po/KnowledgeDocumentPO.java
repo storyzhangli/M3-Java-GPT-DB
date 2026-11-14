@@ -1,6 +1,7 @@
 package com.zl.d31.document.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zl.d31.document.model.KnowledgeDocument;
@@ -25,6 +26,13 @@ public class KnowledgeDocumentPO {
 
     private String documentId;
 
+    /**
+     * 文档来源。
+     *
+     * <p>D31 真机库沿用 D26 既有列名 {@code source_system}；不新增重复列，
+     * 通过显式映射把领域字段 source 落到既有列，避免“代码能编译、真机导入失败”。</p>
+     */
+    @TableField("source_system")
     private String source;
 
     private String title;
@@ -35,6 +43,12 @@ public class KnowledgeDocumentPO {
 
     private String contentHash;
 
+    /**
+     * 原始字节长度。
+     *
+     * <p>D31 真机库 D26 既有列名为 {@code file_size}，与领域字段 contentLength 显式映射。</p>
+     */
+    @TableField("file_size")
     private Long contentLength;
 
     private String errorCode;

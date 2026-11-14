@@ -43,6 +43,12 @@ public class DocumentPageContent {
     /** 是否空白页。 */
     private Boolean blank;
 
+    /** 解析器名称（D27 页面表既有非空列）。 */
+    private String parserName = "BasicDocumentParser";
+
+    /** 解析器版本（D27 页面表既有非空列）。 */
+    private String parserVersion = "D31";
+
     /** 创建时间。 */
     private LocalDateTime createdAt;
 

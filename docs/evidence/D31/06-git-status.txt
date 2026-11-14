@@ -1,0 +1,37 @@
+BRANCH=master HEAD=273fb5d9d58227c74d3f170cd04801ea2a2e3366 === STATUS ===
+ M D31/D31_VSUAI/src/main/java/com/zl/d31/document/embedding/service/DocumentEmbeddingService.java
+ M D31/D31_VSUAI/src/main/java/com/zl/d31/document/model/DocumentPageContent.java
+ M D31/D31_VSUAI/src/main/java/com/zl/d31/document/po/DocumentPageContentPO.java
+ M D31/D31_VSUAI/src/main/java/com/zl/d31/document/po/KnowledgeDocumentPO.java
+ M D31/D31_VSUAI/src/main/java/com/zl/d31/document/service/DocumentImportService.java
+ M D31/D31_VSUAI/src/main/java/com/zl/d31/document/service/DocumentPageService.java
+ M D31/D31_VSUAI/src/main/java/com/zl/d31/document/service/DocumentRegistrationService.java
+ M D31/D31_VSUAI/src/main/java/com/zl/d31/document/support/DocumentConverter.java
+ M D31/D31_VSUAI/src/main/resources/application.yml
+ M D31/D31_VSUAI/src/main/resources/db/schema-document-page.sql
+ M D31/D31_VSUAI/src/main/resources/db/schema-knowledge-document.sql
+ M D31/D31_VSUAI/src/test/java/com/zl/d31/document/DocumentImportServiceTest.java
+ M D31/D31_VSUAI/src/test/java/com/zl/d31/document/DocumentRegistrationServiceTest.java
+?? D31/D31_VSUAI/src/main/java/com/zl/d31/document/support/StableIdGenerator.java
+?? D31/D31_VSUAI/src/main/java/com/zl/d31/document/vector/
+?? D31/D31_VSUAI/src/main/resources/db/migration-d31-content-hash-scope.sql
+?? D31/D31_VSUAI/src/main/resources/db/schema-d31-vector-index.sql
+?? D31/D31_VSUAI/src/test/java/com/zl/d31/document/vector/
+?? docs/evidence/D31/
+?? "docs/proj_docs/D31-\345\220\221\351\207\217\345\205\245\345\272\223\346\233\264\346\226\260\344\270\216\345\271\202\347\255\211\346\212\200\346\234\257\345\216\237\347\220\206\345\217\212\346\223\215\344\275\234\345\256\236\350\267\265\346\214\207\345\215\227.md"
+?? "docs/proj_docs/D31-\345\220\221\351\207\217\345\205\245\345\272\223\346\233\264\346\226\260\344\270\216\345\271\202\347\255\211\351\241\271\347\233\256\350\277\255\344\273\243\345\205\250\351\207\217\350\257\264\346\230\216.md"
+=== DIFF STAT ===
+ .../service/DocumentEmbeddingService.java          |   7 +-
+ .../zl/d31/document/model/DocumentPageContent.java |   6 +
+ .../zl/d31/document/po/DocumentPageContentPO.java  |  25 ++-
+ .../zl/d31/document/po/KnowledgeDocumentPO.java    |  14 ++
+ .../document/service/DocumentImportService.java    | 169 +++++++++++++++------
+ .../d31/document/service/DocumentPageService.java  |   7 +
+ .../service/DocumentRegistrationService.java       |  61 +++++---
+ .../zl/d31/document/support/DocumentConverter.java |   4 +
+ D31/D31_VSUAI/src/main/resources/application.yml   |  24 ++-
+ .../src/main/resources/db/schema-document-page.sql |  33 ++--
+ .../resources/db/schema-knowledge-document.sql     |  42 ++---
+ .../zl/d31/document/DocumentImportServiceTest.java |  35 +++--
+ .../document/DocumentRegistrationServiceTest.java  |   9 +-
+ 13 files changed, 315 insertions(+), 121 deletions(-)

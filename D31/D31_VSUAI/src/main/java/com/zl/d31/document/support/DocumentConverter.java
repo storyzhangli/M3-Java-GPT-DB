@@ -81,6 +81,8 @@ public class DocumentConverter {
         page.setContent(po.getContent());
         page.setContentLength(po.getContentLength());
         page.setBlank(po.getBlank() != null && po.getBlank() == 1);
+        page.setParserName(po.getParserName());
+        page.setParserVersion(po.getParserVersion());
         page.setCreatedAt(po.getCreatedAt());
         page.setUpdatedAt(po.getUpdatedAt());
         return page;
@@ -97,6 +99,8 @@ public class DocumentConverter {
         po.setContent(page.getContent());
         po.setContentLength(page.getContentLength());
         po.setBlank(Boolean.TRUE.equals(page.getBlank()) ? 1 : 0);
+        po.setParserName(page.getParserName());
+        po.setParserVersion(page.getParserVersion());
         po.setCreatedAt(page.getCreatedAt());
         po.setUpdatedAt(page.getUpdatedAt());
         return po;
