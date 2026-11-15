@@ -1,0 +1,3 @@
+filter: documentId=43b91812856828feb657dd3a6fef4a01 hits=2 scores=[0.2326512336730957, 0.042061030864715576]
+filter-missing: DOC-NOT-EXIST-999 hits=0
+score-check: score=0.2326512336730957 cosineDistance=0.7673487663269043 selfSimilarity=0.23265122439108343 |score-(1-distance)|=0.0 |selfSimilarity-score|=9.282012269906659E-9

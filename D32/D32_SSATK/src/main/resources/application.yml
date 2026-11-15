@@ -215,6 +215,20 @@ app:
       # 新版本 COMPLETED 后自动清理旧版本向量与台账
       cleanup-old-versions: ${VECTOR_INDEX_CLEANUP_OLD:true}
     # ------------------------------------------------------------------
+    # D32 新增：相似度检索治理。
+    # Query Embedding 与入库共用同一 EmbeddingModel/维度校验（同 384 维向量空间）；
+    # 检索经 Spring AI PgVectorStore.similaritySearch（cosine <=>，HNSW）。
+    # 任务书约定：默认 Top-5、K 可调；阈值待 10 问题评估后基于真实分数分布另行决策，
+    # 本迭代不设相似度阈值（similarityThreshold 保持 0.0，不过滤）。
+    # ------------------------------------------------------------------
+    search:
+      # 默认返回条数 Top-K
+      default-top-k: ${SEARCH_DEFAULT_TOP_K:5}
+      # 单次检索允许的最大 K
+      max-top-k: ${SEARCH_MAX_TOP_K:20}
+      # 查询文本最大长度（UTF-16 字符）
+      max-query-length: ${SEARCH_MAX_QUERY_LENGTH:8192}
+    # ------------------------------------------------------------------
     # 新增：模型调用韧性（异常分类 + 超时 + 有限重试的单一责任层）。
     # 同步/流式共用此配置；仅对确认可重试的失败重试，首片段后流式不重放。
     # ------------------------------------------------------------------

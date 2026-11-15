@@ -1,0 +1,8 @@
+vector_store.total=28
+vector_store.managedBy=d32 count=28
+
+{"title": "伺服电机常见故障排查指南（教学夹具）", "source": "d32-search-corpus", "chunkId": "13326283-7e61-52a8-8d4c-0d8e1fd13051", "version": "1", "strategy": "STRUCTURE", "managedBy": "d32", "modelName": "local-hashing-embedding", "chunkIndex": 2, "dimensions": 384, "documentId": "b4238c1f3aae9691969ece5ff5a6b498", "contentHash": "f1d0373ae9f23d53ca03425b1d956b14c0ac9ab27112ce9095c09860d66c0dc0", "pageNumbers": "1", "vectorSpaceId": "local|local-hashing-embedding|local-v1|384"}
+
+{"title": "液压机液压系统故障维修手册（教学夹具）", "source": "d32-search-corpus", "chunkId": "1e612ecc-8f47-550f-bd01-a04616f0dc26", "version": "1", "strategy": "STRUCTURE", "managedBy": "d32", "modelName": "local-hashing-embedding", "chunkIndex": 1, "dimensions": 384, "documentId": "1766ef0ad9080f57f8d880e7bc85735f", "contentHash": "3e6d7bfc951d9d0aa6ae2051fd50ed8914f0c99fe7afac9b00037ca3ffa43271", "pageNumbers": "1", "vectorSpaceId": "local|local-hashing-embedding|local-v1|384"}
+
+{"title": "轴承润滑与振动监测手册（教学夹具）", "source": "d32-search-corpus", "chunkId": "32f2117c-5b6f-52ad-9cc6-f5c3811ccf7e", "version": "1", "strategy": "STRUCTURE", "managedBy": "d32", "modelName": "local-hashing-embedding", "chunkIndex": 2, "dimensions": 384, "documentId": "ce5250b9060459e7057e41488cdb192e", "contentHash": "292489d4721c36057f987aacb2eb942a369f83661e15ab5e8f4647bf5bb35ca4", "pageNumbers": "1", "vectorSpaceId": "local|local-hashing-embedding|local-v1|384"}

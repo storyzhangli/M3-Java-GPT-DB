@@ -66,6 +66,29 @@ public class DocumentEmbeddingService {
     }
 
     /**
+     * D32 新增：查询文本嵌入入口（Query Embedding）。
+     *
+     * <p>与入库共用同一 EmbeddingModel、同一重试执行器与同一维度校验器，
+     * 保证查询向量与文档向量处于同一 384 维向量空间（同模型同维度是相似度可比的前提）。</p>
+     *
+     * @param query 用户查询文本（非空）
+     * @return 查询向量（维度与配置一致）
+     */
+    public float[] embedQuery(String query) {
+        if (query == null || query.isBlank()) {
+            throw EmbeddingServiceException.nonRetryable("查询文本为空，无法生成 Query Embedding");
+        }
+        if (query.length() > properties.getMaxInputLength()) {
+            throw EmbeddingServiceException.nonRetryable(
+                    "查询文本长度 " + query.length() + " 超过上限 " + properties.getMaxInputLength()
+                            + "（UTF-16 字符，非 Token）");
+        }
+        float[] vector = retryExecutor.execute(() -> embeddingModel.embed(query));
+        validator.validate(vector, properties.getDimensions());
+        return vector;
+    }
+
+    /**
      * 单条 Chunk 嵌入：前置校验 → 重试调用 → 结果校验 → 组装记录。
      *
      * <p>向量入库逐条调用本方法，单条失败不阻断其他 Chunk，
