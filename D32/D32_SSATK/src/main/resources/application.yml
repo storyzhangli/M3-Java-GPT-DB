@@ -15,7 +15,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${MYSQL_URL:jdbc:mysql://127.0.0.1:3306/ai_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
     username: ${MYSQL_USER:root}
-    password: ${MYSQL_PASSWORD}
+    password: ${MYSQL_PASSWORD:123456}
 
     # ------------------------------------------------------------------
     # 新增：pgvector 专用 PostgreSQL 数据源（与上方 MySQL 主库完全隔离）。
@@ -27,7 +27,7 @@ spring:
     pg:
       jdbc-url: ${PG_URL:jdbc:postgresql://192.168.200.153:5432/spring_ai}
       username: ${PG_USER:postgres}
-      password: ${PG_PASSWORD}
+      password: ${PG_VECTOR_PASSWORD:}
       driver-class-name: org.postgresql.Driver
       pool-name: ${PG_POOL_NAME:PgVectorHikariPool}
       maximum-pool-size: ${PG_POOL_MAX:10}
