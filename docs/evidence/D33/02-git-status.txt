@@ -1,0 +1,10 @@
+ M .gitignore
+ M D33/D33_CAARMCL/src/main/resources/application.yml
+?? D33/D33_CAARMCL/src/main/java/com/zl/d33/rag/
+?? D33/D33_CAARMCL/src/test/java/
+?? docs/evidence/D33/
+?? docs/iteration_records/
+?? "docs/proj_docs/D33-\351\241\271\347\233\256\350\277\255\344\273\243\344\273\273\345\212\241\344\271\246Prompt-three-DB-\344\270\212\344\270\213\346\226\207\347\273\204\350\243\205\344\270\216 RAG \346\234\200\345\260\217\351\227\255\347\216\257.md"
+ .gitignore                                         |  5 +++++
+ D33/D33_CAARMCL/src/main/resources/application.yml | 24 ++++++++++++++++++++++
+ 2 files changed, 29 insertions(+)

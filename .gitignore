@@ -38,3 +38,8 @@ Thumbs.db
 .env
 .env.*
 /docs/temp_docs/
+
+# surefire 测试报告目录（含 java.library.path 等环境变量信息，禁止入库）
+**/target/surefire-reports/
+
+*.log.err
