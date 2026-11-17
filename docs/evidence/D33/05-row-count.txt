@@ -1,0 +1,7 @@
+knowledge_document rows=0
+knowledge_document_page rows=0
+Exception in thread "main" java.sql.SQLSyntaxErrorException: Unknown column 'status' in 'field list'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:112)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:114)
+	at com.mysql.cj.jdbc.StatementImpl.executeQuery(StatementImpl.java:1318)
+	at ProbeRowCount.main(ProbeRowCount.java:21)

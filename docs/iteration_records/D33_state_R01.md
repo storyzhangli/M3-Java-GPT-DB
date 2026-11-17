@@ -32,6 +32,7 @@ D33-R01（阶段二：按需精读与设计，2026-11-17）
 
 ### 修改（main）
 14. `application.yml` — 追加 `app.ai.rag` 段（default-top-k/max-top-k/context-char-budget/similarity-threshold/system-prompt/拒答文案，全部环境变量可覆盖）。
+14a. `adapter/deepseek/DeepSeekChatModelConfiguration.java` — 补 `@ConditionalOnMissingBean ObservationRegistry` 兜底 bean（真实 deepseek 测试上下文缺该 bean，修复启动失败）。
 
 ### 新增（test，包 `com.zl.d33.rag`）
 15. `rag/service/ContextAssemblyServiceTest.java` — 去重、排序、预算边界（恰好等于预算 / 超预算截断 / 空白内容过滤）。
@@ -74,11 +75,21 @@ D33-R01（阶段二：按需精读与设计，2026-11-17）
 - 全量 `mvn clean test`：**Tests run: 33, Failures: 0, Errors: 0, Skipped: 4**，BUILD SUCCESS（Skipped 4 = 门控真机测试待激活）
 - 真机门控 `-Dtest=D33RagEndToEndIntegrationTest`（D33_RAG_IT=true，真实 PG/MySQL，AI_MODE=mock）：
   **Tests run: 4, Failures: 0, Errors: 0, Skipped: 0**——真实导入/入库/检索/HTTP 接口/NO_HIT 拒答全部通过
+- 真实 DeepSeek 门控（AI_MODE=deepseek，mocked=false）：
+  **Tests run: 4, Failures: 0, Errors: 0, Skipped: 0**——真实 ChatModel 调用仅 2 次（最小必要），
+  真实回答带合法 [S1] 引用、MODEL_CALL 记录 totalTokens=452、outcome=SUCCESS；NO_HIT 零调用分支仍成立
+- 环境修复：两张文档表 18:21 被外部重建为旧结构（0 行），经授权 DROP 后按仓库 DDL 重建对齐（MysqlRebuildTables.java）
+- 全量回归（表重建与配置修改后）：`mvn clean test` 仍 **33/0/0/4 BUILD SUCCESS**
 
 ## 证据
 - docs/evidence/D33/00-env-probe.txt（阶段一）
-- logs/D33/D33-clean-test.log（全量 33 tests 摘要）、logs/D33/D33-rag-it.log（真机门控 4 tests）、logs/D33/D33-compile.log
+- docs/evidence/D33/03-mysql-table-columns.txt、04-mysql-four-tables.txt、05-row-count.txt、06-rebuild-tables.txt（表结构核查与重建）
+- logs/D33/D33-clean-test.log（全量 33 tests 摘要）、logs/D33/D33-rag-it.log（mock 真机门控 4 tests）、
+  logs/D33/D33-rag-it-deepseek.log（**真实 DeepSeek 门控 4 tests，mocked=false，token=452**）、logs/D33/D33-compile.log
 - docs/temp_docs/D33/demo_rag_e2e.ps1（演示脚本）、docs/evidence/D33/demo-rag-e2e-output.txt（演示留痕）
+- 密钥泄露扫描：日志与证据目录均无 sk- 模式匹配（真实值仅存在于环境变量）
 
 ## 遗留问题
-- 真实 DeepSeek API Key 未提供：Level 5「实际 ChatModel」环节阻塞——真实 PG/pgvector 检索 + 上下文组装 + 离线生成闭环已真机验证，模型环节为 AI_MODE=mock，不冒充真实模型端到端；注入 AI_API_KEY + AI_MODE=deepseek 后可复跑真机集成测试与演示脚本补齐。
+- 真实 DeepSeek 端到端已补齐（Level 5 达成），后续复跑继续遵守最小调用原则（仅两个可答用例计费）。
+- 相似度阈值保持 0.0，待换语义 Embedding 模型后按分数分布重评；预算为 UTF-16 字符估算（非 Token）。
+- 环境隔离：运行其他模块前核对其 schema 资源，防止旧 DDL 再次覆盖 D31+ 表结构。

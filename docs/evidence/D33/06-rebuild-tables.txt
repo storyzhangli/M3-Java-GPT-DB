@@ -1,0 +1,6 @@
+dropped knowledge_document_page
+dropped knowledge_document
+executed DDL from schema-knowledge-document.sql -> CREATE TABLE IF NOT EXISTS `knowledge_document` (     `id`  
+executed DDL from schema-document-page.sql -> CREATE TABLE IF NOT EXISTS `knowledge_document_page` (     `
+knowledge_document columns=[id, document_id, source_system, title, version, status, file_name, content_type, file_size, content_hash, error_code, error_message, created_at, updated_at]
+knowledge_document_page columns=[id, document_id, page_number, content, character_count, blank_page, parser_name, parser_version, updated_at]

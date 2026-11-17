@@ -1,0 +1,57 @@
+=== knowledge_document exists check ===
+  id | bigint | null=NO | default=null
+  document_id | varchar(64) | null=NO | default=null
+  source | varchar(64) | null=NO | default=
+  title | varchar(200) | null=NO | default=
+  version | int | null=NO | default=1
+  status | varchar(16) | null=NO | default=PENDING
+  lifecycle_status | varchar(16) | null=NO | default=ACTIVE
+  content_hash | varchar(64) | null=YES | default=null
+  content_length | bigint | null=NO | default=0
+  error_code | varchar(32) | null=NO | default=
+  error_message | varchar(500) | null=NO | default=
+  created_at | datetime | null=NO | default=null
+  updated_at | datetime | null=NO | default=null
+=== knowledge_document_page exists check ===
+  id | bigint | null=NO | default=null
+  document_id | varchar(64) | null=NO | default=null
+  source | varchar(64) | null=NO | default=
+  title | varchar(200) | null=NO | default=
+  version | int | null=NO | default=1
+  page_number | int | null=NO | default=null
+  content | mediumtext | null=YES | default=null
+  content_length | int | null=NO | default=0
+  blank | tinyint | null=NO | default=0
+  created_at | datetime | null=NO | default=null
+  updated_at | datetime | null=NO | default=null
+=== vector_index_task exists check ===
+  id | bigint | null=NO | default=null
+  document_id | varchar(64) | null=NO | default=null
+  version | varchar(64) | null=NO | default=null
+  strategy | varchar(32) | null=NO | default=null
+  content_hash | char(64) | null=NO | default=null
+  split_version | varchar(64) | null=NO | default=null
+  vector_space_id | varchar(128) | null=NO | default=null
+  chunk_count | int | null=NO | default=0
+  status | varchar(16) | null=NO | default=PENDING
+  stage | varchar(24) | null=NO | default=
+  error_code | varchar(64) | null=NO | default=
+  error_message | varchar(500) | null=NO | default=
+  attempt_count | int | null=NO | default=0
+  next_retry_at | datetime(6) | null=YES | default=null
+  created_at | datetime(6) | null=NO | default=null
+  updated_at | datetime(6) | null=NO | default=null
+=== vector_chunk_index exists check ===
+  id | bigint | null=NO | default=null
+  document_id | varchar(64) | null=NO | default=null
+  version | varchar(64) | null=NO | default=null
+  strategy | varchar(32) | null=NO | default=null
+  chunk_id | char(36) | null=NO | default=null
+  chunk_index | int | null=NO | default=null
+  content | mediumtext | null=NO | default=null
+  chunk_content_hash | char(64) | null=NO | default=null
+  character_count | int | null=NO | default=null
+  page_numbers | varchar(255) | null=NO | default=
+  status | varchar(16) | null=NO | default=PENDING
+  created_at | datetime(6) | null=NO | default=null
+  updated_at | datetime(6) | null=NO | default=null
