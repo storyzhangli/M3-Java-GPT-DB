@@ -97,6 +97,7 @@ public class DocumentImportService {
                 doc.setVersion(nextVersion(existing.getVersion()));
             }
             doc.setStatus(DocumentStatus.PROCESSING);
+            doc.setLifecycleStatus(com.zl.d34.document.model.DocumentLifecycleStatus.PENDING);
             doc.setUpdatedAt(now);
         } else {
             doc = newDocument(documentId, source, title, contentHash, now);
@@ -119,6 +120,12 @@ public class DocumentImportService {
         }
 
         doc.setUpdatedAt(LocalDateTime.now());
+        if (doc.getStatus() == DocumentStatus.COMPLETED
+                && doc.getLifecycleStatus() == com.zl.d34.document.model.DocumentLifecycleStatus.PENDING) {
+            doc.setLifecycleStatus(com.zl.d34.document.model.DocumentLifecycleStatus.ACTIVE);
+            doc.setEffectiveFrom(doc.getUpdatedAt());
+            doc.setEffectiveTo(null);
+        }
         // 按唯一业务键更新终态，避免部分 JDBC/MyBatis 场景下自增主键未回填导致 updateById 静默 0 行。
         mapper.update(converter.toPO(doc),
                 new UpdateWrapper<KnowledgeDocumentPO>().eq("document_id", doc.getDocumentId()));
@@ -240,6 +247,7 @@ public class DocumentImportService {
         doc.setTitle(resolvedTitle);
         doc.setVersion(1);
         doc.setStatus(DocumentStatus.PROCESSING);
+        doc.setLifecycleStatus(com.zl.d34.document.model.DocumentLifecycleStatus.PENDING);
         doc.setCreatedAt(now);
         doc.setUpdatedAt(now);
         return doc;

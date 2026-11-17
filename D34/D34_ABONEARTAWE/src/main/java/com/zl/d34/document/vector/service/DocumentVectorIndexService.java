@@ -405,6 +405,15 @@ public class DocumentVectorIndexService {
         metadata.put("dimensions", embedding.getDimensions());
         metadata.put("source", doc.getSource());
         metadata.put("title", doc.getTitle());
+        metadata.put("lifecycleStatus", doc.getLifecycleStatus() == null
+                ? com.zl.d34.document.model.DocumentLifecycleStatus.PENDING.name()
+                : doc.getLifecycleStatus().name());
+        if (doc.getEffectiveFrom() != null) {
+            metadata.put("effectiveFrom", doc.getEffectiveFrom().toString());
+        }
+        if (doc.getEffectiveTo() != null) {
+            metadata.put("effectiveTo", doc.getEffectiveTo().toString());
+        }
         metadata.put("pageNumbers", chunk.getPageNumbers());
         record.setMetadata(metadata);
         return record;

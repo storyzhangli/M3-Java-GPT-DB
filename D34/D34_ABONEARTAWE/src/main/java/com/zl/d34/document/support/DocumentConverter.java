@@ -3,6 +3,7 @@ package com.zl.d34.document.support;
 import com.zl.d34.document.dto.DocumentPageView;
 import com.zl.d34.document.dto.DocumentView;
 import com.zl.d34.document.model.DocumentPageContent;
+import com.zl.d34.document.model.DocumentLifecycleStatus;
 import com.zl.d34.document.model.DocumentStatus;
 import com.zl.d34.document.model.KnowledgeDocument;
 import com.zl.d34.document.po.DocumentPageContentPO;
@@ -26,6 +27,10 @@ public class DocumentConverter {
         doc.setTitle(po.getTitle());
         doc.setVersion(po.getVersion());
         doc.setStatus(DocumentStatus.fromName(po.getStatus()));
+        doc.setLifecycleStatus(DocumentLifecycleStatus.fromName(po.getLifecycleStatus(),
+                DocumentLifecycleStatus.PENDING));
+        doc.setEffectiveFrom(po.getEffectiveFrom());
+        doc.setEffectiveTo(po.getEffectiveTo());
         doc.setContentHash(po.getContentHash());
         doc.setContentLength(po.getContentLength());
         doc.setErrorCode(po.getErrorCode());
@@ -43,6 +48,10 @@ public class DocumentConverter {
         po.setTitle(doc.getTitle());
         po.setVersion(doc.getVersion());
         po.setStatus(doc.getStatus().name());
+        po.setLifecycleStatus(doc.getLifecycleStatus() == null
+                ? DocumentLifecycleStatus.PENDING.name() : doc.getLifecycleStatus().name());
+        po.setEffectiveFrom(doc.getEffectiveFrom());
+        po.setEffectiveTo(doc.getEffectiveTo());
         po.setContentHash(doc.getContentHash());
         po.setContentLength(doc.getContentLength());
         po.setErrorCode(doc.getErrorCode());
@@ -59,6 +68,10 @@ public class DocumentConverter {
         view.setTitle(doc.getTitle());
         view.setVersion(doc.getVersion());
         view.setStatus(doc.getStatus().name());
+        view.setLifecycleStatus(doc.getLifecycleStatus() == null
+                ? null : doc.getLifecycleStatus().name());
+        view.setEffectiveFrom(doc.getEffectiveFrom());
+        view.setEffectiveTo(doc.getEffectiveTo());
         view.setContentLength(doc.getContentLength());
         view.setErrorCode(doc.getErrorCode());
         view.setErrorMessage(doc.getErrorMessage());

@@ -32,7 +32,27 @@ public record RetrievedChunk(String vectorId,
                              double cosineDistance,
                              String content,
                              String modelName,
-                             Integer dimensions) {
+                             Integer dimensions,
+                             String lifecycleStatus,
+                             String effectiveFrom,
+                             String effectiveTo) {
+
+    /** 兼容 D33 的 12 参数构造；旧数据生命周期为空，由外置兼容策略显式处理。 */
+    public RetrievedChunk(String vectorId,
+                          String documentId,
+                          String chunkId,
+                          String title,
+                          String source,
+                          String version,
+                          Integer chunkIndex,
+                          double score,
+                          double cosineDistance,
+                          String content,
+                          String modelName,
+                          Integer dimensions) {
+        this(vectorId, documentId, chunkId, title, source, version, chunkIndex, score,
+                cosineDistance, content, modelName, dimensions, null, null, null);
+    }
 
     /**
      * 由检索命中视图映射（不触发任何新检索、不访问向量库）。
@@ -51,6 +71,9 @@ public record RetrievedChunk(String vectorId,
                 hit.getCosineDistance() == null ? 0.0d : hit.getCosineDistance(),
                 hit.getContent(),
                 hit.getModelName(),
-                hit.getDimensions());
+                hit.getDimensions(),
+                hit.getLifecycleStatus(),
+                hit.getEffectiveFrom(),
+                hit.getEffectiveTo());
     }
 }

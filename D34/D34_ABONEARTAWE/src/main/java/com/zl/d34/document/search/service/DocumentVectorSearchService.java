@@ -151,6 +151,9 @@ public class DocumentVectorSearchService {
         hit.setChunkIndex(asInteger(metadata.get("chunkIndex")));
         hit.setModelName(asString(metadata.get("modelName")));
         hit.setDimensions(asInteger(metadata.get("dimensions")));
+        hit.setLifecycleStatus(asString(metadata.get("lifecycleStatus")));
+        hit.setEffectiveFrom(asString(metadata.get("effectiveFrom")));
+        hit.setEffectiveTo(asString(metadata.get("effectiveTo")));
         return hit;
     }
 

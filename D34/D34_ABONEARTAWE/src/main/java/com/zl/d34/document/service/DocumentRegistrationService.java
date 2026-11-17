@@ -71,6 +71,7 @@ public class DocumentRegistrationService {
         doc.setTitle(title);
         doc.setVersion(1);
         doc.setStatus(DocumentStatus.PENDING);
+        doc.setLifecycleStatus(com.zl.d34.document.model.DocumentLifecycleStatus.PENDING);
         doc.setContentHash(null);
         doc.setContentLength(0L);
         doc.setErrorCode("");

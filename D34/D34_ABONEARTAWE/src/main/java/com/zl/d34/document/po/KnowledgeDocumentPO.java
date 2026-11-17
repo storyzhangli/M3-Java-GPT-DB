@@ -41,6 +41,12 @@ public class KnowledgeDocumentPO {
 
     private String status;
 
+    private String lifecycleStatus;
+
+    private LocalDateTime effectiveFrom;
+
+    private LocalDateTime effectiveTo;
+
     private String contentHash;
 
     /**

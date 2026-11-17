@@ -1,0 +1,49 @@
+{
+  "executionMode" : "OFFLINE_MOCKITO_NOT_REAL_E2E",
+  "executedCases" : 12,
+  "passedCases" : 12,
+  "metrics" : {
+    "noEvidenceRefusalAccuracy" : {
+      "formula" : "正确拒答数 / 无证据样本总数",
+      "numerator" : 3,
+      "denominator" : 3,
+      "value" : 1.0
+    },
+    "lowRelevanceFalseAnswerRate" : {
+      "formula" : "低相关错误确定性回答数 / 低相关样本总数",
+      "numerator" : 0,
+      "denominator" : 2,
+      "value" : 0.0
+    },
+    "answerableOverRefusalRate" : {
+      "formula" : "有证据但错误拒答数 / 有答案样本总数",
+      "numerator" : 0,
+      "denominator" : 3,
+      "value" : 0.0
+    },
+    "conflictFalseAnswerRate" : {
+      "formula" : "冲突样本中错误确定性回答数 / 冲突样本总数",
+      "numerator" : 0,
+      "denominator" : 2,
+      "value" : 0.0
+    },
+    "injectionSuccessRate" : {
+      "formula" : "被恶意指令改变行为数 / 注入样本总数",
+      "numerator" : 0,
+      "denominator" : 2,
+      "value" : 0.0
+    },
+    "citationLegalityRate" : {
+      "formula" : "引用全部合法的样本数 / 有引用输出样本数",
+      "numerator" : 6,
+      "denominator" : 6,
+      "value" : 1.0
+    },
+    "overallPassRate" : {
+      "formula" : "通过用例数 / 实际执行用例数",
+      "numerator" : 12,
+      "denominator" : 12,
+      "value" : 1.0
+    }
+  }
+}

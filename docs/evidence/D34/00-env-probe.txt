@@ -1,0 +1,100 @@
+D34 environment probe\nTimestamp: 2026-11-17T17:44:09.0622988+08:00
+\n=== Git HEAD ===
+21965ab12ff3cbbb8c77f3ed54fba551115cc702
+ExitCode: 0
+\n=== Git status --short ===
+?? ../docs/evidence/D34/
+?? "../docs/proj_docs/D34-\351\241\271\347\233\256\350\277\255\344\273\243\344\273\273\345\212\241\344\271\246Prompt-\345\237\272\344\272\216\350\257\201\346\215\256\345\233\236\347\255\224\344\270\216\346\227\240\350\257\201\346\215\256\346\213\222\347\255\224.md"
+ExitCode: 0
+\n=== Git log --oneline -5 ===
+21965ab D34 项目基础骨架
+0a44f38 D33 项目迭代
+1c187dd D33 项目基础骨架
+25cab68 D32 one two three 三项目统一 Postgres账户的密码坏境变量
+3ae4878 D32 项目迭代
+ExitCode: 0
+\n=== Java version ===
+java version "21.0.7" 2025-04-15 LTS
+Java(TM) SE Runtime Environment (build 21.0.7+8-LTS-245)
+Java HotSpot(TM) 64-Bit Server VM (build 21.0.7+8-LTS-245, mixed mode, sharing)
+ExitCode: 0
+\n=== Maven version ===
+Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5)
+Maven home: D:\SoftwareInstall\Apache\Maven\apache-maven-3.9.16
+Java version: 21.0.7, vendor: Oracle Corporation, runtime: D:\SoftwareInstall\JDK\JDK21
+Default locale: zh_CN, platform encoding: UTF-8
+OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
+ExitCode: 0
+\n=== Secret presence (values never printed) ===
+PGVECTOR_DB_PASSWORD present: False
+MYSQL_PASSWORD present: False
+\n=== Required RAG classes ===
+rag\service\RagOrchestrator.java => True
+rag\service\RetrievalService.java => True
+rag\service\ContextAssemblyService.java => True
+rag\service\GenerationService.java => True
+rag\config\RagProperties.java => True
+rag\controller\RagController.java => True
+knowledge\CitationRegistry.java => True
+device\ClarificationService.java => True
+device\DeviceInformationExtractor.java => True
+document\search\service\DocumentVectorSearchService.java => True
+document\embedding\local\LocalHashingEmbeddingModel.java => True
+document\model\KnowledgeDocument.java => True
+\n=== File inventory ===
+Written: E:\AI\project\AI-Learning-three-GPT\M3-Java\docs\temp_docs\D34\file-inventory.txt
+ExitCode: 0
+\n=== RAG symbol scan ===
+Written: E:\AI\project\AI-Learning-three-GPT\M3-Java\docs\temp_docs\D34\rag-symbol-scan.txt
+ExitCode: 0
+\n=== Effective POM generation ===
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< org.ai.m3:D34_ABONEARTAWE >----------------------
+[INFO] Building D34_ABONEARTAWE 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- help:3.5.1:effective-pom (default-cli) @ D34_ABONEARTAWE ---
+[INFO] Effective-POM written to: E:\AI\project\AI-Learning-three-GPT\M3-Java\docs\temp_docs\D34\effective-pom.xml
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.648 s
+[INFO] Finished at: 2026-11-17T17:44:15+08:00
+[INFO] ------------------------------------------------------------------------
+ExitCode: 0
+\n=== Dependency tree generation ===
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< org.ai.m3:D34_ABONEARTAWE >----------------------
+[INFO] Building D34_ABONEARTAWE 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] The artifact mysql:mysql-connector-java:jar:8.0.33 has been relocated to com.mysql:mysql-connector-j:jar:8.0.33: MySQL Connector/J artifacts moved to reverse-DNS compliant Maven 2+ coordinates.
+[INFO] 
+[INFO] --- dependency:3.8.1:tree (default-cli) @ D34_ABONEARTAWE ---
+[WARNING] The artifact mysql:mysql-connector-java:jar:8.0.33 has been relocated to com.mysql:mysql-connector-j:jar:8.0.33: MySQL Connector/J artifacts moved to reverse-DNS compliant Maven 2+ coordinates.
+[INFO] Wrote dependency tree to: E:\AI\project\AI-Learning-three-GPT\M3-Java\docs\temp_docs\D34\dependency-tree.txt
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.409 s
+[INFO] Finished at: 2026-11-17T17:44:22+08:00
+[INFO] ------------------------------------------------------------------------
+ExitCode: 0
+\n=== PostgreSQL client availability ===
+localhost:5432 - accepting connections
+ExitCode: 0
+\n=== Local TCP 5432 availability ===
+localhost:5432 reachable = True
+ExitCode: 0
+\n=== Docker PostgreSQL/pgvector containers (read-only) ===
+docker: not installed
+ExitCode: 0
+\n=== Probe artifact presence ===
+file-inventory.txt => True
+rag-symbol-scan.txt => True
+effective-pom.xml => True
+dependency-tree.txt => True
+Probe finished.

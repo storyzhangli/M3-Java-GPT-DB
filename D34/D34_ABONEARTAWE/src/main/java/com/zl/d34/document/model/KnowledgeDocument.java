@@ -33,6 +33,15 @@ public class KnowledgeDocument {
     /** 导入处理状态。 */
     private DocumentStatus status;
 
+    /** 生效生命周期，与导入处理状态分离。 */
+    private DocumentLifecycleStatus lifecycleStatus;
+
+    /** 生效起始时间；空值表示 ACTIVE 后立即生效。 */
+    private LocalDateTime effectiveFrom;
+
+    /** 失效时间；到达该时间后不可作为证据。 */
+    private LocalDateTime effectiveTo;
+
     /** 原始字节 SHA-256。 */
     private String contentHash;
 

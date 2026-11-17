@@ -23,7 +23,31 @@ public enum ResultCode {
     AI_UNAVAILABLE(5002, "AI 服务暂不可用，请稍后重试"),
 
     /** 未预期的系统兜底错误。 */
-    SYSTEM_ERROR(5000, "系统繁忙，请稍后重试");
+    SYSTEM_ERROR(5000, "系统繁忙，请稍后重试"),
+
+    /** 知识库无任何检索结果。 */
+    NO_EVIDENCE(4401, "知识库无可用证据"),
+
+    /** 仅词面相似，证据不能支持问题。 */
+    LOW_RELEVANCE(4402, "检索证据相关性不足"),
+
+    /** 有相关证据但覆盖不足或没有当前生效证据。 */
+    INSUFFICIENT_EVIDENCE(4403, "证据覆盖不足"),
+
+    /** 缺设备型号、故障码等必要条件。 */
+    MISSING_REQUIRED_CONTEXT(4404, "缺少必要上下文"),
+
+    /** 当前有效证据对同一事实给出矛盾内容。 */
+    EVIDENCE_CONFLICT(4405, "有效证据存在冲突"),
+
+    /** 引用不在白名单或格式非法。 */
+    INVALID_CITATION(4406, "引用编号或格式非法"),
+
+    /** 输出含无证据支持的设备事实。 */
+    UNSUPPORTED_CLAIM(4407, "设备事实缺少证据支持"),
+
+    /** 其他生成后校验失败。 */
+    GENERATION_VALIDATION_FAILED(4408, "生成结果校验失败");
 
     private final Integer code;
 

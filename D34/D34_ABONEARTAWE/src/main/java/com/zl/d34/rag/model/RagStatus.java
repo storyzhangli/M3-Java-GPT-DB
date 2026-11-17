@@ -26,6 +26,18 @@ public enum RagStatus {
     /** 模型生成失败。 */
     GENERATION_FAILED("模型生成失败"),
 
+    /** 证据门禁拒答，未调用生成模型。 */
+    EVIDENCE_REFUSED("证据不足或相关性不足，未调用生成模型"),
+
+    /** 缺少必要条件，需要单条高价值澄清。 */
+    CLARIFICATION_REQUIRED("缺少回答所需的必要条件"),
+
+    /** 当前生效证据存在同范围事实冲突，未调用生成模型。 */
+    EVIDENCE_CONFLICT("当前生效证据存在事实冲突"),
+
+    /** 生成后引用或事实支持校验失败。 */
+    GENERATION_VALIDATION_FAILED("生成结果未通过证据校验"),
+
     /** 全链路成功。 */
     SUCCESS("检索、组装与生成均成功");
 

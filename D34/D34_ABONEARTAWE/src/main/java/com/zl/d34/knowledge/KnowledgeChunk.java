@@ -22,5 +22,19 @@ public record KnowledgeChunk(String documentId,
                              String section,
                              Integer page,
                              String excerpt,
-                             String url) {
+                             String url,
+                             String version,
+                             String lifecycleStatus) {
+
+    /** 兼容既有引用与检索路径的构造器。 */
+    public KnowledgeChunk(String documentId,
+                          String chunkId,
+                          String title,
+                          String sourceType,
+                          String section,
+                          Integer page,
+                          String excerpt,
+                          String url) {
+        this(documentId, chunkId, title, sourceType, section, page, excerpt, url, null, null);
+    }
 }

@@ -1,0 +1,15 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< org.ai.m3:D34_ABONEARTAWE >----------------------
+[INFO] Building D34_ABONEARTAWE 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- help:3.5.1:effective-pom (default-cli) @ D34_ABONEARTAWE ---
+[INFO] Effective-POM written to: E:\AI\project\AI-Learning-three-GPT\M3-Java\docs\temp_docs\D34\effective-pom.xml
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.648 s
+[INFO] Finished at: 2026-11-17T17:44:15+08:00
+[INFO] ------------------------------------------------------------------------

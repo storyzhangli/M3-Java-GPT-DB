@@ -1,0 +1,77 @@
+D34 final Git verification
+HEAD=21965ab12ff3cbbb8c77f3ed54fba551115cc702
+diffCheckExit=0
+nonIterationWorkspaceDifferences=2
+nonIterationDisposition=PRESERVED_UNCHANGED_NOT_PART_OF_D34_DELIVERY
+nonIterationPath=D33/D33_CAARMCL/src/main/java/com/zl/d33/adapter/deepseek/DeepSeekChatModelConfiguration.java
+nonIterationPath=D33/D33_CAARMCL/src/test/java/com/zl/d33/rag/D33RagEndToEndIntegrationTest.java
+untrackedSensitiveBuildArtifacts=0
+originalTaskAttachment=SEPARATE_USER_INPUT_NOT_IMPLEMENTATION_ARTIFACT
+
+STATUS
+ M D33/D33_CAARMCL/src/main/java/com/zl/d33/adapter/deepseek/DeepSeekChatModelConfiguration.java
+ M D33/D33_CAARMCL/src/test/java/com/zl/d33/rag/D33RagEndToEndIntegrationTest.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/adapter/deepseek/DeepSeekChatModelConfiguration.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/common/ResultCode.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/dto/DocumentView.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/model/KnowledgeDocument.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/po/KnowledgeDocumentPO.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/search/dto/VectorSearchHitView.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/search/service/DocumentVectorSearchService.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/service/DocumentImportService.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/service/DocumentRegistrationService.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/support/DocumentConverter.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/vector/service/DocumentVectorIndexService.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/knowledge/CitationRegistry.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/knowledge/KnowledgeChunk.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/config/RagProperties.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/RagResponse.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/RagStatus.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/RetrievedChunk.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/service/ContextAssemblyService.java
+ M D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/service/RagOrchestrator.java
+ M D34/D34_ABONEARTAWE/src/main/resources/application.yml
+ M D34/D34_ABONEARTAWE/src/main/resources/db/schema-knowledge-document.sql
+?? D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/model/DocumentLifecycleStatus.java
+?? D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/AssessmentDetails.java
+?? D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/CitationValidationResult.java
+?? D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/ConflictGroup.java
+?? D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/EvidenceAssessment.java
+?? D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/EvidenceAssessmentDetail.java
+?? D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/EvidenceCoverage.java
+?? D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/EvidenceDecision.java
+?? D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/service/EvidenceAssessmentService.java
+?? D34/D34_ABONEARTAWE/src/main/resources/db/migration-d34-document-lifecycle.sql
+?? D34/D34_ABONEARTAWE/src/test/java/
+?? docs/evidence/D34/
+?? docs/iteration_records/D34_state_R01.md
+?? docs/iteration_records/D34_state_R02.md
+?? docs/proj_docs/D34-01-基于证据回答与无证据拒答-项目迭代全量信息与操作.md
+?? docs/proj_docs/D34-02-基于证据回答与无证据拒答-技术文档说明与实践指南.md
+?? docs/proj_docs/D34-项目迭代任务书Prompt-基于证据回答与无证据拒答.md
+?? logs/D34/
+
+DIFF_CHECK_OUTPUT
+warning: in the working copy of 'D33/D33_CAARMCL/src/main/java/com/zl/d33/adapter/deepseek/DeepSeekChatModelConfiguration.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D33/D33_CAARMCL/src/test/java/com/zl/d33/rag/D33RagEndToEndIntegrationTest.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/adapter/deepseek/DeepSeekChatModelConfiguration.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/common/ResultCode.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/dto/DocumentView.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/model/KnowledgeDocument.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/po/KnowledgeDocumentPO.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/search/dto/VectorSearchHitView.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/search/service/DocumentVectorSearchService.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/service/DocumentImportService.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/service/DocumentRegistrationService.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/support/DocumentConverter.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/document/vector/service/DocumentVectorIndexService.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/knowledge/CitationRegistry.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/knowledge/KnowledgeChunk.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/config/RagProperties.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/RagResponse.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/RagStatus.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/model/RetrievedChunk.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/service/ContextAssemblyService.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/java/com/zl/d34/rag/service/RagOrchestrator.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/resources/application.yml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'D34/D34_ABONEARTAWE/src/main/resources/db/schema-knowledge-document.sql', LF will be replaced by CRLF the next time Git touches it

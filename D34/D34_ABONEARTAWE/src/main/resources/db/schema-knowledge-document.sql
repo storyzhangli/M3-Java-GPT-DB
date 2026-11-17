@@ -17,6 +17,9 @@ CREATE TABLE IF NOT EXISTS `knowledge_document` (
     `title`          VARCHAR(300) NOT NULL COMMENT '文档标题，安全截断',
     `version`        VARCHAR(64)  NOT NULL COMMENT '文档版本，从 1 开始；沿用既有字符串列',
     `status`         VARCHAR(16)  NOT NULL COMMENT 'PENDING/PROCESSING/COMPLETED/FAILED',
+    `lifecycle_status` VARCHAR(16) NOT NULL DEFAULT 'PENDING' COMMENT 'PENDING/ACTIVE/DEPRECATED；与导入状态分离',
+    `effective_from` DATETIME(6)  NULL COMMENT '生效起始时间',
+    `effective_to`   DATETIME(6)  NULL COMMENT '失效时间',
     `file_name`      VARCHAR(255) NULL COMMENT '原始文件名',
     `content_type`   VARCHAR(128) NULL COMMENT '原始内容类型',
     `file_size`      BIGINT       NULL COMMENT '原始字节长度（领域字段 contentLength）',
@@ -28,7 +31,8 @@ CREATE TABLE IF NOT EXISTS `knowledge_document` (
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_knowledge_document_id` (`document_id`),
     UNIQUE KEY `uk_document_content_hash` (`document_id`, `content_hash`),
-    KEY `idx_knowledge_doc_status` (`status`, `updated_at`)
+    KEY `idx_knowledge_doc_status` (`status`, `updated_at`),
+    KEY `idx_knowledge_doc_lifecycle` (`lifecycle_status`, `effective_from`, `effective_to`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci

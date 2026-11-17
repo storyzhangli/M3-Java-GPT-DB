@@ -6,6 +6,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.deepseek.DeepSeekChatModel;
 import org.springframework.ai.deepseek.DeepSeekChatOptions;
 import org.springframework.ai.deepseek.api.DeepSeekApi;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +40,7 @@ public class DeepSeekChatModelConfiguration {
     public ChatModel chatModel(AiProperties aiProperties,
                                RestClient.Builder restClientBuilder,
                                WebClient.Builder webClientBuilder,
-                               ObservationRegistry observationRegistry) {
+                               ObjectProvider<ObservationRegistry> observationRegistry) {
 
         DeepSeekApi deepSeekApi = DeepSeekApi.builder()
                 .baseUrl(aiProperties.getBaseUrl())
@@ -60,7 +61,8 @@ public class DeepSeekChatModelConfiguration {
                 .deepSeekApi(deepSeekApi)
                 .defaultOptions(defaultOptions)
                 .retryTemplate(noRetry)
-                .observationRegistry(observationRegistry)
+                // 未引入 Actuator 时容器可能没有 ObservationRegistry；NOOP 保留相同调用链且不发观测数据。
+                .observationRegistry(observationRegistry.getIfAvailable(() -> ObservationRegistry.NOOP))
                 .build();
     }
 }

@@ -1,0 +1,14 @@
+knowledge_document actual columns:
+  id | bigint | null=NO | key=PRI
+  document_id | varchar(64) | null=NO | key=UNI
+  source | varchar(64) | null=NO | key=
+  title | varchar(200) | null=NO | key=
+  version | int | null=NO | key=
+  status | varchar(16) | null=NO | key=MUL
+  lifecycle_status | varchar(16) | null=NO | key=
+  content_hash | varchar(64) | null=YES | key=UNI
+  content_length | bigint | null=NO | key=
+  error_code | varchar(32) | null=NO | key=
+  error_message | varchar(500) | null=NO | key=
+  created_at | datetime | null=NO | key=
+  updated_at | datetime | null=NO | key=

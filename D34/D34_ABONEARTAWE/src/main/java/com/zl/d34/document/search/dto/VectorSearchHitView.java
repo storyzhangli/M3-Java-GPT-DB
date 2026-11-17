@@ -54,4 +54,13 @@ public class VectorSearchHitView {
 
     /** 原始 metadata 透传（供评估与溯源，不构造字段）。 */
     private Map<String, Object> metadata;
+
+    /** 文档生命周期状态 metadata。 */
+    private String lifecycleStatus;
+
+    /** 生效时间 metadata（ISO LocalDateTime，可为空）。 */
+    private String effectiveFrom;
+
+    /** 失效时间 metadata（ISO LocalDateTime，可为空）。 */
+    private String effectiveTo;
 }

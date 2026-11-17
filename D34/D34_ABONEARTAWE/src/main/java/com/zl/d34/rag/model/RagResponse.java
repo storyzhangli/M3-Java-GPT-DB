@@ -26,7 +26,20 @@ public record RagResponse(String status,
                           String answer,
                           List<RagSource> sources,
                           RetrievalState retrieval,
-                          GenerationState generation) {
+                          GenerationState generation,
+                          String decision,
+                          String reasonCode,
+                          EvidenceAssessment evidence) {
+
+    /** 兼容 D33 六参数构造；新调用方应显式提供证据决策。 */
+    public RagResponse(String status,
+                       String message,
+                       String answer,
+                       List<RagSource> sources,
+                       RetrievalState retrieval,
+                       GenerationState generation) {
+        this(status, message, answer, sources, retrieval, generation, null, null, null);
+    }
 
     /**
      * 检索环节摘要。

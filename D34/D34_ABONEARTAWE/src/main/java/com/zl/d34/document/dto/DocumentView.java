@@ -20,6 +20,12 @@ public class DocumentView {
 
     private String status;
 
+    private String lifecycleStatus;
+
+    private LocalDateTime effectiveFrom;
+
+    private LocalDateTime effectiveTo;
+
     private Long contentLength;
 
     private String errorCode;
