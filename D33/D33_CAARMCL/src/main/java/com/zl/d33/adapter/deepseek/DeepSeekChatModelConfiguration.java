@@ -6,6 +6,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.deepseek.DeepSeekChatModel;
 import org.springframework.ai.deepseek.DeepSeekChatOptions;
 import org.springframework.ai.deepseek.api.DeepSeekApi;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,16 @@ public class DeepSeekChatModelConfiguration {
 
     /** 保留 D21 基线的采样温度（原 spring.ai.deepseek.chat.options.temperature=0.7）。 */
     private static final double BASELINE_TEMPERATURE = 0.7d;
+
+    /**
+     * 兜底 ObservationRegistry：测试上下文禁用观察自动配置时容器内无该 bean，
+     * 这里提供默认实现；真实运行时若自动配置已注册则本 bean 退让（ConditionalOnMissingBean）。
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public ObservationRegistry observationRegistry() {
+        return ObservationRegistry.create();
+    }
 
     /**
      * 构造供应商中立的 {@link ChatModel} Bean（运行时为 DeepSeekChatModel）。

@@ -34,9 +34,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * D33 RAG 真机端到端（显式门控：D33_RAG_IT=true 才执行）。
  *
  * <p>真实链路：文档导入（MySQL 台账）→ 向量入库（真实 PG/pgvector 384 维）→
- * 真实向量检索（cosine &lt;=&gt;，HNSW）→ 上下文组装 → 生成（AI_MODE=mock 离线模型）。
- * 测试不连接真实 DeepSeek（无 API Key 时），模型环节属离线模拟，不冒充真实模型端到端；
- * 测试前必须注入 PG_VECTOR_PASSWORD（缺失时启动阶段 fail-fast）。</p>
+ * 真实向量检索（cosine &lt;=&gt;，HNSW）→ 上下文组装 → 生成。
+ * AI_MODE=mock（默认）时模型环节为离线模拟；AI_MODE=deepseek 时走真实 ChatModel 端到端，
+ * 真实模型调用仅限两个可答用例（最小调用），拒答/参数校验用例零调用。
+ * 测试前必须注入 PG_VECTOR_PASSWORD（缺失时启动阶段 fail-fast）；deepseek 模式另需 AI_API_KEY，
+ * 两者真实值均只存在于环境变量，禁止写入任何文件。</p>
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -90,9 +92,9 @@ class D33RagEndToEndIntegrationTest {
         for (var source : response.sources()) {
             assertEquals(documentId, source.documentId());
         }
-        // mock 模式服务端编号行保证闭环可演示：来源编号必然可回溯
+        // 两种模式下模型均被调用；mocked 标识与 AI_MODE 一致（deepseek 模式为真实模型）
         assertTrue(response.generation().invoked());
-        assertTrue(response.generation().mocked());
+        assertEquals("mock".equals(System.getenv("AI_MODE")), response.generation().mocked());
         assertFalse(response.answer().contains("[S99]"));
     }
 
